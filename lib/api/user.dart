@@ -1,3 +1,4 @@
+import 'package:ipm_app/api/commodity.dart';
 import 'package:requests/requests.dart';
 
 class User {
@@ -7,16 +8,20 @@ class User {
   double _totalValue = 0.0;
   final _commodities = [];
 
-  double get getTotalValue{
+  double get getTotalValue {
     return _totalValue;
   }
 
-  double get getTotalWeight{
+  double get getTotalWeight {
     return _totalWeight;
   }
 
-  List get getCommodities{
-    return _commodities;
+  void get getCommodities {
+    for (Commodity i in _commodities) {
+      if (i.getValue > 0) {
+        print(i.toString());
+      }
+    }
   }
 
   String get getName {
@@ -78,9 +83,15 @@ class User {
     _setName = json['alias'];
     _totalWeight = double.parse(json['holdingData']['totalWeight']);
     _totalValue = double.parse(json['holdingData']['totalValue']);
-    for (dynamic commodity in json['holdingData']['holdings']){
-      _commodities.add(commodity['commodity']);
+    for (dynamic commodity in json['holdingData']['holdings']) {
+      _commodities.add(Commodity(
+          commodity['commodity'],
+          double.parse(commodity['commodityValue']),
+          double.parse(commodity['value']),
+          double.parse(commodity['valuePercentage']),
+          double.parse(commodity['weight']),
+          double.parse(commodity['totalCharges']),
+          double.parse(commodity['totalChargesPercentage'])));
     }
   }
-
 }
