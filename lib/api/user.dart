@@ -1,4 +1,5 @@
 import 'package:ipm_app/api/commodity.dart';
+import 'package:ipm_app/api/injection.dart';
 import 'package:requests/requests.dart';
 
 class User {
@@ -7,6 +8,7 @@ class User {
   double _totalWeight = 0.0;
   double _totalValue = 0.0;
   final _commodities = [];
+  final _injections = [];
 
   double get getTotalValue {
     return _totalValue;
@@ -26,6 +28,10 @@ class User {
 
   String get getName {
     return _name;
+  }
+
+  List get getInjections {
+    return _injections;
   }
 
   set _setName(String newName) {
@@ -93,5 +99,12 @@ class User {
           double.parse(commodity['totalCharges']),
           double.parse(commodity['totalChargesPercentage'])));
     }
+    json['injectionData'].forEach((k, v) => (_injections.add(Injection(
+        DateTime.parse(v['initialDate']),
+        double.parse(v['currentInvestment']),
+        double.parse(v['initialInvestment']),
+        double.parse(v['valueChange']),
+        v['valueChangePercentage'].toDouble(),
+        double.parse(v['chargePercentage'])))));
   }
 }
