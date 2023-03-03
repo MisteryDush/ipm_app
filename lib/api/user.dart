@@ -56,7 +56,7 @@ class User {
     return user;
   }
 
-  Future<String> login(String username, String password) async {
+  Future<List> login(String username, String password) async {
     var r =
         await Requests.post('http://portal.demo.ipm.capital/mobileApi/login',
             body: {
@@ -64,15 +64,17 @@ class User {
               'password': password,
             },
             bodyEncoding: RequestBodyEncoding.FormURLEncoded, timeoutSeconds: 20);
-    if (r.statusCode == 200) {
-      return r.json()['token'];
-    } else {
-      return r.json()['message'];
-    }
+    return [r.statusCode, r.json()];
   }
 
   Future<void> setup(String username, String password) async {
-    _setToken = await login(username, password).then((value) => value);
+    var r = await login(username, password);
+    if(r[0] == 200){
+      _setToken = r[1]['token'];
+    }
+    else{
+      return;
+    }
     await initializeData();
   }
 
