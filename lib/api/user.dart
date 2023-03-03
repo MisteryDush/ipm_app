@@ -63,7 +63,7 @@ class User {
               'username': username,
               'password': password,
             },
-            bodyEncoding: RequestBodyEncoding.FormURLEncoded);
+            bodyEncoding: RequestBodyEncoding.FormURLEncoded, timeoutSeconds: 20);
     if (r.statusCode == 200) {
       return r.json()['token'];
     } else {
@@ -84,7 +84,7 @@ class User {
     var r = await Requests.get(
         'https://portal.demo.ipm.capital/mobileApi/data/getUserData',
         headers: {'Authorization': 'Bearer $getToken'},
-        bodyEncoding: RequestBodyEncoding.FormURLEncoded);
+        bodyEncoding: RequestBodyEncoding.FormURLEncoded, timeoutSeconds: 20);
     dynamic json = r.json();
     _setName = json['alias'];
     _totalWeight = double.parse(json['holdingData']['totalWeight']);
