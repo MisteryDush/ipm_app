@@ -6,27 +6,27 @@ class Injection {
   double _valueChangePercentage = 0.0;
   double _chargePercentage = 0.0;
 
-  DateTime get GetInitialDate {
+  DateTime get getInitialDate {
     return _initialDate;
   }
 
-  double get GetCurrentInvestment {
+  double get getCurrentInvestment {
     return _currentInvestment;
   }
 
-  double get GetInitialInvestment {
+  double get getInitialInvestment {
     return _initialInvestment;
   }
 
-  double get GetValueChange {
+  double get getValueChange {
     return _valueChange;
   }
 
-  double get GetValueChangePercentage {
+  double get getValueChangePercentage {
     return _valueChangePercentage;
   }
 
-  double get GetChargePercentage {
+  double get getChargePercentage {
     return _chargePercentage;
   }
 
