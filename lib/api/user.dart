@@ -52,7 +52,7 @@ class User {
 
   static Future<User> createUser(String username, String password) async {
     User user = User();
-    await user.asyncInit(username, password);
+    await user.setup(username, password);
     return user;
   }
 
@@ -63,30 +63,27 @@ class User {
               'username': username,
               'password': password,
             },
-            bodyEncoding: RequestBodyEncoding.FormURLEncoded, timeoutSeconds: 20);
+            bodyEncoding: RequestBodyEncoding.FormURLEncoded,
+            timeoutSeconds: 20);
     return [r.statusCode, r.json()];
   }
 
   Future<void> setup(String username, String password) async {
     var r = await login(username, password);
-    if(r[0] == 200){
+    if (r[0] == 200) {
       _setToken = r[1]['token'];
-    }
-    else{
-      return;
+    } else {
+      throw LoginException();
     }
     await initializeData();
-  }
-
-  asyncInit(String username, String password) async {
-    await setup(username, password);
   }
 
   Future<void> initializeData() async {
     var r = await Requests.get(
         'https://portal.demo.ipm.capital/mobileApi/data/getUserData',
         headers: {'Authorization': 'Bearer $getToken'},
-        bodyEncoding: RequestBodyEncoding.FormURLEncoded, timeoutSeconds: 20);
+        bodyEncoding: RequestBodyEncoding.FormURLEncoded,
+        timeoutSeconds: 20);
     dynamic json = r.json();
     _setName = json['alias'];
     _totalWeight = double.parse(json['holdingData']['totalWeight']);
@@ -109,4 +106,8 @@ class User {
         v['valueChangePercentage'].toDouble(),
         double.parse(v['chargePercentage'])))));
   }
+}
+
+class LoginException implements Exception {
+  LoginException();
 }
