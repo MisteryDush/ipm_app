@@ -93,50 +93,108 @@ class _LoginPageState extends State<LoginPage> {
                       side: const BorderSide(color: textColorGold)),
                   child: const Text('Login'),
                   onPressed: () async {
-                    showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (_) {
-                          return Dialog(
-                            // The background color
-                            backgroundColor: Colors.white,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 20),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: const [
-                                  // The loading indicator
-                                  CircularProgressIndicator(
-                                    color: textColorGold,
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  // Some text
-                                  Text('Loading...')
-                                ],
-                              ),
-                            ),
-                          );
-                        });
-                    print(nameController.text.isEmpty);
-                    print(passwordController.text.isEmpty);
                     if (nameController.text.isEmpty |
                         passwordController.text.isEmpty) {
-                      print('Blank!');
-                      Navigator.of(context).pop();
-                      return;
+                      showDialog(
+                          barrierDismissible: true,
+                          context: context,
+                          builder: (_) {
+                            return Dialog(
+                              // The background color
+                              backgroundColor: backgroundColorIndigo,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 40),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: const [
+                                    // The loading indicator
+                                    // Some text
+                                    Text(
+                                      'Please enter username and password',
+                                      style: TextStyle(
+                                          color: textColorGold, fontSize: 14),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          });
+                    } else {
+                      bool isSuccess = true;
+                      showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (_) {
+                            return Dialog(
+                              // The background color
+                              backgroundColor: backgroundColorIndigo,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 20),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: const [
+                                    // The loading indicator
+                                    CircularProgressIndicator(
+                                      color: textColorGold,
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    // Some text
+                                    Text(
+                                      'Loading...',
+                                      style: TextStyle(color: textColorGold),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          });
+                      print('Logging in...');
+                      User user = User();
+                      try {
+                        user = await User.createUser(
+                            nameController.text, passwordController.text);
+                      } on LoginException {
+                        Navigator.of(context).pop();
+                        showDialog(
+                            barrierDismissible: true,
+                            context: context,
+                            builder: (_) {
+                              return Dialog(
+                                // The background color
+                                backgroundColor: backgroundColorIndigo,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 20),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: const [
+                                      // Some text
+                                      Text(
+                                        'Invalid credentials, try again.',
+                                        style: TextStyle(color: textColorGold, fontSize: 14),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                        isSuccess = false;
+                      } finally {
+                        if (isSuccess) {
+                          Navigator.of(context).pop();
+                          print('Welcome ${user.getName} !');
+                          print('Total weight: ${user.getTotalWeight}');
+                          print('Total value: \$${user.getTotalValue}');
+                          print('You have these commodities:');
+                          user.getCommodities;
+                          print(user.getInjections);
+                        }
+                      }
                     }
-                    print('Logging in...');
-                    User user = await User.createUser(
-                        nameController.text, passwordController.text);
-                    Navigator.of(context).pop();
-                    print('Welcome ${user.getName} !');
-                    print('Total weight: ${user.getTotalWeight}');
-                    print('Total value: \$${user.getTotalValue}');
-                    print('You have these commodities:');
-                    user.getCommodities;
-                    print(user.getInjections);
                   },
                 )),
           ],
