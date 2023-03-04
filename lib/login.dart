@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'api/user.dart';
+import 'menu.dart';
 
 void main() => runApp(const MyApp());
 
@@ -13,9 +14,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: _title,
-      home: Scaffold(
+      initialRoute: '/',
+      routes: {
+        '/menu': (context) => Menu(),
+      },
+      home: const Scaffold(
         backgroundColor: backgroundColorIndigo,
         body: LoginPage(),
       ),
@@ -153,9 +158,8 @@ class _LoginPageState extends State<LoginPage> {
                             );
                           });
                       print('Logging in...');
-                      User user = User();
                       try {
-                        user = await User.createUser(
+                        User user = await User.createUser(
                             nameController.text, passwordController.text);
                       } on LoginException {
                         Navigator.of(context).pop();
@@ -186,12 +190,7 @@ class _LoginPageState extends State<LoginPage> {
                       } finally {
                         if (isSuccess) {
                           Navigator.of(context).pop();
-                          print('Welcome ${user.getName} !');
-                          print('Total weight: ${user.getTotalWeight}');
-                          print('Total value: \$${user.getTotalValue}');
-                          print('You have these commodities:');
-                          user.getCommodities;
-                          print(user.getInjections);
+                          Navigator.popAndPushNamed(context, '/menu');
                         }
                       }
                     }
