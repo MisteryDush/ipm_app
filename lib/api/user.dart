@@ -50,10 +50,13 @@ class User {
     }
   }
 
+  User._();
+
+  static final instance = User._();
+
   static Future<User> createUser(String username, String password) async {
-    User user = User();
-    await user.setup(username, password);
-    return user;
+    await instance.setup(username, password);
+    return instance;
   }
 
   Future<List> login(String username, String password) async {
