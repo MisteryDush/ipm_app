@@ -7,8 +7,24 @@ class User {
   String _name = '';
   double _totalWeight = 0.0;
   double _totalValue = 0.0;
+  double _lastTotalValue = 0.0;
+  double _valueDifference = 0.0;
+  double _valueDifferencePercentage = 0.0;
   final _commodities = [];
   final _injections = [];
+
+  double get getLastTotalValue{
+    return _lastTotalValue;
+  }
+
+
+  double get getValueDifference{
+    return _valueDifference;
+  }
+
+  double get getValueDifferencePercentage{
+    return _valueDifferencePercentage;
+  }
 
   double get getTotalValue {
     return _totalValue;
@@ -108,7 +124,11 @@ class User {
         double.parse(v['valueChange']),
         v['valueChangePercentage'].toDouble(),
         double.parse(v['chargePercentage'])))));
+    _lastTotalValue = double.parse(json['historicPerformance']['allTimeData']['allMetalsData']['data'][json['historicPerformance']['allTimeData']['allMetalsData']['data'].length - 1]);
+    _valueDifference = _totalValue - _lastTotalValue;
+    _valueDifferencePercentage = (_valueDifference) / _lastTotalValue * 100;
   }
+
 }
 
 class LoginException implements Exception {
