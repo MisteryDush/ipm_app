@@ -49,26 +49,10 @@ class Menu extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 30),
                         child: Image.asset(
-                          'assets/images/line.png',
-                          width: 120,
+                          'assets/images/logo_divide.png',
+                          width: 320,
                           fit: BoxFit.fill,
                         )),
-                    Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 30),
-                        child: Image.asset(
-                          'assets/images/star.png',
-                          width: 37,
-                          fit: BoxFit.fill,
-                        )),
-                    Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 30),
-                        child: Image.asset(
-                          'assets/images/line.png',
-                          width: 120,
-                          fit: BoxFit.fill,
-                        ))
                   ],
                 ),
                 Padding(
@@ -88,7 +72,7 @@ class Menu extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        differenceFormat.format(user.getValueDifferencePercentage),
+                        user.getValueDifferencePercentage.toStringAsFixed(2) + '%',
                         style: TextStyle(
                           fontSize: 20,
                           color: getColor(user.getValueDifferencePercentage)
