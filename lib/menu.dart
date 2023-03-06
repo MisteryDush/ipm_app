@@ -25,7 +25,6 @@ class Menu extends StatelessWidget {
             leading: IconButton(
                 icon: Icon(Icons.dehaze),
                 onPressed: () {
-                  print(_scaffoldKey.currentState!.isDrawerOpen);
                   if (_scaffoldKey.currentState?.isDrawerOpen == false) {
                     _scaffoldKey.currentState?.openDrawer();
                   } else {
