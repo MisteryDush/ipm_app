@@ -157,9 +157,8 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             );
                           });
-                      print('Logging in...');
                       try {
-                        User user = await User.createUser(
+                        await User.createUser(
                             nameController.text, passwordController.text);
                       } on LoginException {
                         Navigator.of(context).pop();
