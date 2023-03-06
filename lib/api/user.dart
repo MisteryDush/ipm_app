@@ -15,16 +15,15 @@ class User {
   final _commodities = [];
   final _injections = [];
 
-  double get getLastTotalValue{
+  double get getLastTotalValue {
     return _lastTotalValue;
   }
 
-
-  double get getValueDifference{
+  double get getValueDifference {
     return _valueDifference;
   }
 
-  double get getValueDifferencePercentage{
+  double get getValueDifferencePercentage {
     return _valueDifferencePercentage;
   }
 
@@ -72,9 +71,8 @@ class User {
 
   static final instance = User._();
 
-  static Future<User> createUser(String username, String password) async {
+  static Future<void> createUser(String username, String password) async {
     await instance.setup(username, password);
-    return instance;
   }
 
   Future<List> login(String username, String password) async {
@@ -126,7 +124,11 @@ class User {
         double.parse(v['valueChange']),
         v['valueChangePercentage'].toDouble(),
         double.parse(v['chargePercentage'])))));
-    _lastTotalValue = double.parse(json['historicPerformance']['allTimeData']['allMetalsData']['data'][json['historicPerformance']['allTimeData']['allMetalsData']['data'].length - 1]);
+    _lastTotalValue = double.parse(json['historicPerformance']['allTimeData']
+        ['allMetalsData']['data'][json['historicPerformance']['allTimeData']
+                ['allMetalsData']['data']
+            .length -
+        1]);
     _valueDifference = _totalValue - _lastTotalValue;
     _valueDifferencePercentage = (_valueDifference) / _lastTotalValue * 100;
   }
@@ -134,21 +136,43 @@ class User {
   List<DataRow> getCommoditiesRows() {
     var totalFormat = NumberFormat("###,###.0#", "en_US");
     List<DataRow> dataRows = [];
-    for (Commodity commodity in _commodities){
+    for (Commodity commodity in _commodities) {
       if (commodity.getValue <= 0) continue;
-      var tempRow = DataRow(cells: [DataCell(Text(commodity.getName.toCapitalized(), style: TextStyle(fontSize: 20),)),
-      DataCell(Text(totalFormat.format(commodity.getValue), style: TextStyle(fontSize: 20),)),
-      DataCell(Text(totalFormat.format(commodity.getWeight), style: TextStyle(fontSize: 20),)),
-      DataCell(Text(totalFormat.format(commodity.getLatestPrice), style: TextStyle(fontSize: 20),))]);
+      var tempRow = DataRow(cells: [
+        DataCell(Text(
+          commodity.getName.toCapitalized(),
+          style: TextStyle(fontSize: 20),
+        )),
+        DataCell(Text(
+          totalFormat.format(commodity.getValue),
+          style: TextStyle(fontSize: 20),
+        )),
+        DataCell(Text(
+          totalFormat.format(commodity.getWeight),
+          style: TextStyle(fontSize: 20),
+        )),
+        DataCell(Text(
+          totalFormat.format(commodity.getLatestPrice),
+          style: TextStyle(fontSize: 20),
+        ))
+      ]);
       dataRows.add(tempRow);
     }
+    dataRows.add(DataRow(cells: [
+      DataCell(Text('Total', style: TextStyle(fontSize: 20))),
+      DataCell(Text(totalFormat.format(_totalValue),
+          style: TextStyle(fontSize: 20))),
+      DataCell(Text(totalFormat.format(_totalWeight),
+          style: TextStyle(fontSize: 20))),
+      DataCell(Text(''))
+    ]));
     return dataRows;
   }
-
 }
 
 extension StringCasingExtension on String {
-  String toCapitalized() => length > 0 ?'${this[0].toUpperCase()}${substring(1).toLowerCase()}':'';
+  String toCapitalized() =>
+      length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
 }
 
 class LoginException implements Exception {
