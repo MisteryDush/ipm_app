@@ -48,10 +48,12 @@ class Menu extends StatelessWidget {
                   ListTile(
                     leading: Icon(
                       Icons.home,
+                      size: 30,
+                      color: textColorGold,
                     ),
                     title: const Text(
                       'Home',
-                      style: TextStyle(color: textColorGold),
+                      style: TextStyle(color: Colors.white),
                     ),
                     onTap: () {
                       Navigator.pop(context);
@@ -59,11 +61,55 @@ class Menu extends StatelessWidget {
                   ),
                   ListTile(
                     leading: Icon(
-                      Icons.train,
+                      Icons.area_chart_outlined,
+                      size: 30,
+                      color: textColorGold,
                     ),
                     title: const Text(
-                      'Page 2',
-                      style: TextStyle(color: textColorGold),
+                      'Historical Vault Valuations',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.attach_money,
+                      size: 30,
+                      color: textColorGold,
+                    ),
+                    title: const Text(
+                      'Vault/MGT % Cost Charges',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.price_change_outlined,
+                      size: 30,
+                      color: textColorGold,
+                    ),
+                    title: const Text(
+                      'Injections Page',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.file_download,
+                      size: 30,
+                      color: textColorGold,
+                    ),
+                    title: const Text(
+                      'Download Reports',
+                      style: TextStyle(color: Colors.white),
                     ),
                     onTap: () {
                       Navigator.pop(context);
@@ -126,44 +172,79 @@ class Menu extends StatelessWidget {
                                     user.getValueDifferencePercentage)),
                           ),
                           Padding(padding: EdgeInsets.symmetric(vertical: 20)),
-                          FittedBox(
-                            child: SizedBox(
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: FittedBox(
+                              child: SizedBox(
                                 height: 450,
                                 child: SingleChildScrollView(
-                                    scrollDirection: Axis.vertical,
+                                  scrollDirection: Axis.vertical,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                        color: Colors.black,
+                                        width: 2,
+                                      ),
+                                    ),
                                     child: DataTable(
-                                        headingRowColor:
-                                            MaterialStateColor.resolveWith(
-                                                (states) =>
-                                                    backgroundColorIndigo),
-                                        columns: [
-                                          DataColumn(
-                                            label: Text(
-                                              'Commodity',
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  color: textColorGold),
+                                      headingRowColor: MaterialStateColor.resolveWith(
+                                            (states) => backgroundColorIndigo,
+                                      ),
+                                      dataRowColor: MaterialStateColor.resolveWith(
+                                            (states) => Colors.grey.shade200,
+                                      ),
+                                      dividerThickness: 2,
+                                      columns: [
+                                        DataColumn(
+                                          label: Text(
+                                            'Commodity',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: textColorGold,
                                             ),
                                           ),
-                                          DataColumn(
-                                              label: Text('Value',
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      color: textColorGold))),
-                                          DataColumn(
-                                              label: Text('Weight',
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      color: textColorGold))),
-                                          DataColumn(
-                                              label: Text('Latest\nMetal Price',
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      color: textColorGold))),
-                                        ],
-                                        rows: user.getCommoditiesRows()))),
+                                        ),
+                                        DataColumn(
+                                          label: Text(
+                                            'Value',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: textColorGold,
+                                            ),
+                                          ),
+                                        ),
+                                        DataColumn(
+                                          label: Text(
+                                            'Weight',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: textColorGold,
+                                            ),
+                                          ),
+                                        ),
+                                        DataColumn(
+                                          label: Text(
+                                            'Latest\nMetal Price',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: textColorGold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                      rows: user.getCommoditiesRows(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           )
-                        ])),
+                ])),
                   ],
                 ),
               ),
