@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -125,6 +124,44 @@ class Menu extends StatelessWidget {
                                 fontSize: 20,
                                 color: getColor(
                                     user.getValueDifferencePercentage)),
+                          ),
+                          Padding(padding: EdgeInsets.symmetric(vertical: 20)),
+                          FittedBox(
+                            child: SizedBox(
+                                height: 450,
+                                child: SingleChildScrollView(
+                                    scrollDirection: Axis.vertical,
+                                    child: DataTable(
+                                        headingRowColor:
+                                            MaterialStateColor.resolveWith(
+                                                (states) =>
+                                                    backgroundColorIndigo),
+                                        columns: [
+                                          DataColumn(
+                                            label: Text(
+                                              'Commodity',
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: textColorGold),
+                                            ),
+                                          ),
+                                          DataColumn(
+                                              label: Text('Value',
+                                                  style: TextStyle(
+                                                      fontSize: 20,
+                                                      color: textColorGold))),
+                                          DataColumn(
+                                              label: Text('Weight',
+                                                  style: TextStyle(
+                                                      fontSize: 20,
+                                                      color: textColorGold))),
+                                          DataColumn(
+                                              label: Text('Latest\nMetal Price',
+                                                  style: TextStyle(
+                                                      fontSize: 20,
+                                                      color: textColorGold))),
+                                        ],
+                                        rows: user.getCommoditiesRows()))),
                           )
                         ])),
                   ],
