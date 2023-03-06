@@ -94,9 +94,9 @@ class _LoginPageState extends State<LoginPage> {
                       backgroundColor: backgroundColorIndigo,
                       elevation: 0,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 50, vertical: 20),
+                          horizontal: 50, vertical: 10),
                       side: const BorderSide(color: textColorGold)),
-                  child: const Text('Login'),
+                  child: const Text('Login', style: TextStyle(fontSize: 18),),
                   onPressed: () async {
                     if (nameController.text.isEmpty |
                         passwordController.text.isEmpty) {
