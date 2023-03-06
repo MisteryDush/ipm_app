@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:ipm_app/api/commodity.dart';
 import 'package:ipm_app/api/injection.dart';
 import 'package:requests/requests.dart';
@@ -129,6 +130,23 @@ class User {
     _valueDifferencePercentage = (_valueDifference) / _lastTotalValue * 100;
   }
 
+  List<DataRow> getCommoditiesRows() {
+    List<DataRow> dataRows = [];
+    for (Commodity commodity in _commodities){
+      if (commodity.getValue <= 0) continue;
+      var tempRow = DataRow(cells: [DataCell(Text(commodity.getName.toCapitalized(), style: TextStyle(fontSize: 20),)),
+      DataCell(Text('${commodity.getValue.toStringAsFixed(2)}', style: TextStyle(fontSize: 20),)),
+      DataCell(Text('${commodity.getWeight.toStringAsFixed(2)}', style: TextStyle(fontSize: 20),)),
+      DataCell(Text('${commodity.getLatestPrice.toStringAsFixed(2)}', style: TextStyle(fontSize: 20),))]);
+      dataRows.add(tempRow);
+    }
+    return dataRows;
+  }
+
+}
+
+extension StringCasingExtension on String {
+  String toCapitalized() => length > 0 ?'${this[0].toUpperCase()}${substring(1).toLowerCase()}':'';
 }
 
 class LoginException implements Exception {
