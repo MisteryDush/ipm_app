@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ipm_app/api/commodity.dart';
 import 'package:ipm_app/api/injection.dart';
 import 'package:requests/requests.dart';
@@ -131,13 +132,14 @@ class User {
   }
 
   List<DataRow> getCommoditiesRows() {
+    var totalFormat = NumberFormat("###,###.0#", "en_US");
     List<DataRow> dataRows = [];
     for (Commodity commodity in _commodities){
       if (commodity.getValue <= 0) continue;
       var tempRow = DataRow(cells: [DataCell(Text(commodity.getName.toCapitalized(), style: TextStyle(fontSize: 20),)),
-      DataCell(Text('${commodity.getValue.toStringAsFixed(2)}', style: TextStyle(fontSize: 20),)),
-      DataCell(Text('${commodity.getWeight.toStringAsFixed(2)}', style: TextStyle(fontSize: 20),)),
-      DataCell(Text('${commodity.getLatestPrice.toStringAsFixed(2)}', style: TextStyle(fontSize: 20),))]);
+      DataCell(Text(totalFormat.format(commodity.getValue), style: TextStyle(fontSize: 20),)),
+      DataCell(Text(totalFormat.format(commodity.getWeight), style: TextStyle(fontSize: 20),)),
+      DataCell(Text(totalFormat.format(commodity.getLatestPrice), style: TextStyle(fontSize: 20),))]);
       dataRows.add(tempRow);
     }
     return dataRows;
