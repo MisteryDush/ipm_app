@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forex_conversion/forex_conversion.dart';
 import 'package:intl/intl.dart';
 import 'package:ipm_app/api/commodity.dart';
 import 'package:ipm_app/api/injection.dart';
@@ -14,13 +15,26 @@ class User {
   double _valueDifferencePercentage = 0.0;
   final _commodities = [];
   final _injections = [];
+  Map<String, double> currencyRates = {'USD': 1.0,
+    'EUR': 0.0,
+    'GBP': 0.0,
+    'MYR': 0.0,
+    'SGD': 0.0,
+    'AUD': 0.0
+  };
+  String _chosenCurrency = 'USD';
+  final fx = Forex();
+
+  set setChosenCurrency(String newCurrency) {
+    _chosenCurrency = newCurrency;
+  }
 
   double get getLastTotalValue {
     return _lastTotalValue;
   }
 
   double get getValueDifference {
-    return _valueDifference;
+    return _valueDifference * currencyRates[_chosenCurrency]!;
   }
 
   double get getValueDifferencePercentage {
@@ -28,7 +42,7 @@ class User {
   }
 
   double get getTotalValue {
-    return _totalValue;
+    return _totalValue * currencyRates[_chosenCurrency]!;
   }
 
   double get getTotalWeight {
@@ -73,17 +87,18 @@ class User {
 
   static Future<void> createUser(String username, String password) async {
     await instance.setup(username, password);
+    await instance.getRates();
   }
 
   Future<List> login(String username, String password) async {
     var r =
-        await Requests.post('http://portal.demo.ipm.capital/mobileApi/login',
-            body: {
-              'username': username,
-              'password': password,
-            },
-            bodyEncoding: RequestBodyEncoding.FormURLEncoded,
-            timeoutSeconds: 20);
+    await Requests.post('http://portal.demo.ipm.capital/mobileApi/login',
+        body: {
+          'username': username,
+          'password': password,
+        },
+        bodyEncoding: RequestBodyEncoding.FormURLEncoded,
+        timeoutSeconds: 20);
     return [r.statusCode, r.json()];
   }
 
@@ -117,7 +132,8 @@ class User {
           double.parse(commodity['totalCharges']),
           double.parse(commodity['totalChargesPercentage'])));
     }
-    json['injectionData'].forEach((k, v) => (_injections.add(Injection(
+    json['injectionData'].forEach((k, v) =>
+    (_injections.add(Injection(
         DateTime.parse(v['initialDate']),
         double.parse(v['currentInvestment']),
         double.parse(v['initialInvestment']),
@@ -125,9 +141,9 @@ class User {
         v['valueChangePercentage'].toDouble(),
         double.parse(v['chargePercentage'])))));
     _lastTotalValue = double.parse(json['historicPerformance']['allTimeData']
-        ['allMetalsData']['data'][json['historicPerformance']['allTimeData']
-                ['allMetalsData']['data']
-            .length -
+    ['allMetalsData']['data'][json['historicPerformance']['allTimeData']
+    ['allMetalsData']['data']
+        .length -
         1]);
     _valueDifference = _totalValue - _lastTotalValue;
     _valueDifferencePercentage = (_valueDifference) / _lastTotalValue * 100;
@@ -144,7 +160,7 @@ class User {
           style: TextStyle(fontSize: 20),
         )),
         DataCell(Text(
-          totalFormat.format(commodity.getValue),
+          totalFormat.format(commodity.getValue * currencyRates[_chosenCurrency]!),
           style: TextStyle(fontSize: 20),
         )),
         DataCell(Text(
@@ -152,7 +168,7 @@ class User {
           style: TextStyle(fontSize: 20),
         )),
         DataCell(Text(
-          totalFormat.format(commodity.getLatestPrice),
+          totalFormat.format(commodity.getLatestPrice * currencyRates[_chosenCurrency]!),
           style: TextStyle(fontSize: 20),
         ))
       ]);
@@ -160,13 +176,21 @@ class User {
     }
     dataRows.add(DataRow(cells: [
       DataCell(Text('Total', style: TextStyle(fontSize: 20))),
-      DataCell(Text(totalFormat.format(_totalValue),
+      DataCell(Text(totalFormat.format(_totalValue * currencyRates[_chosenCurrency]!),
           style: TextStyle(fontSize: 20))),
       DataCell(Text(totalFormat.format(_totalWeight),
           style: TextStyle(fontSize: 20))),
       DataCell(Text(''))
     ]));
     return dataRows;
+  }
+
+  Future<void> getRates() async {
+    currencyRates['EUR'] = await fx.getCurrencyConverted('USD', 'EUR', 1);
+    currencyRates['GBP'] = await fx.getCurrencyConverted('USD', 'GBP', 1);
+    currencyRates['MYR'] = await fx.getCurrencyConverted('USD', 'MYR', 1);
+    currencyRates['SGD'] = await fx.getCurrencyConverted('USD', 'SGD', 1);
+    currencyRates['AUD'] = await fx.getCurrencyConverted('USD', 'AUD', 1);
   }
 }
 
