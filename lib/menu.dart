@@ -98,10 +98,6 @@ class Menu extends StatelessWidget {
                                           MaterialStateColor.resolveWith(
                                         (states) => backgroundColorIndigo,
                                       ),
-                                      dataRowColor:
-                                          MaterialStateColor.resolveWith(
-                                        (states) => Colors.grey.shade200,
-                                      ),
                                       dividerThickness: 2,
                                       columns: [
                                         DataColumn(
