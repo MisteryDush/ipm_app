@@ -37,6 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   requests: ^4.7.0
   intl: ^0.18.0
+  money_converter: ^2.0.2
+  shared_preferences: ^2.0.18
 
 dev_dependencies:
   flutter_test:
