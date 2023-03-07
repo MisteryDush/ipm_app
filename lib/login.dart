@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ipm_app/settings.dart';
 import 'api/user.dart';
 import 'menu.dart';
 
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/menu': (context) => Menu(),
+        '/settings': (context) => Settings(),
       },
       home: const Scaffold(
         backgroundColor: backgroundColorIndigo,
