@@ -94,11 +94,13 @@ class Menu extends StatelessWidget {
                                       ),
                                     ),
                                     child: DataTable(
-                                      headingRowColor: MaterialStateColor.resolveWith(
-                                            (states) => backgroundColorIndigo,
+                                      headingRowColor:
+                                          MaterialStateColor.resolveWith(
+                                        (states) => backgroundColorIndigo,
                                       ),
-                                      dataRowColor: MaterialStateColor.resolveWith(
-                                            (states) => Colors.grey.shade200,
+                                      dataRowColor:
+                                          MaterialStateColor.resolveWith(
+                                        (states) => Colors.grey.shade200,
                                       ),
                                       dividerThickness: 2,
                                       columns: [
@@ -150,7 +152,7 @@ class Menu extends StatelessWidget {
                               ),
                             ),
                           )
-                ])),
+                        ])),
                   ],
                 ),
               ),
