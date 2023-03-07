@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:ipm_app/widgets/main_app_bar.dart';
 import 'package:ipm_app/widgets/main_drawer.dart';
 
 import 'api/user.dart';
@@ -17,27 +18,9 @@ class Menu extends StatelessWidget {
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
 
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-            backgroundColor: backgroundColorIndigo,
-            automaticallyImplyLeading: true,
-            leading: IconButton(
-                icon: Icon(Icons.dehaze),
-                onPressed: () {
-                  if (_scaffoldKey.currentState?.isDrawerOpen == false) {
-                    _scaffoldKey.currentState?.openDrawer();
-                  } else {
-                    _scaffoldKey.currentState?.openEndDrawer();
-                  }
-                }),
-            toolbarHeight: 70,
-            title: Row(children: [
-              Image.asset(
-                'assets/images/logo_and_name.png',
-                height: 50,
-              ),
-            ])),
+    return Scaffold(
+      body: Scaffold(
+        appBar: MainAppBar(_scaffoldKey),
         body: Scaffold(
             key: _scaffoldKey,
             drawer: MainDrawer(),
