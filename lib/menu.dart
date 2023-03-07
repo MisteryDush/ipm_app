@@ -58,7 +58,7 @@ class Menu extends StatelessWidget {
                         padding: EdgeInsets.zero,
                         child: Column(children: [
                           Text(
-                            totalFormat.format(user.getTotalValue),
+                            '${totalFormat.format(user.getTotalValue)} ${user.getChosenCurrency}',
                             style: TextStyle(
                               fontSize: 30,
                             ),

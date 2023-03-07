@@ -25,6 +25,10 @@ class User {
   String _chosenCurrency = 'USD';
   final fx = Forex();
 
+  String get getChosenCurrency {
+    return _chosenCurrency;
+  }
+
   set setChosenCurrency(String newCurrency) {
     _chosenCurrency = newCurrency;
   }
@@ -152,47 +156,41 @@ class User {
   List<DataRow> getCommoditiesRows() {
     var totalFormat = NumberFormat("###,###.0#", "en_US");
     List<DataRow> dataRows = [];
-    for (int i = 0; i < _commodities.length; i++) {
-      Commodity commodity = _commodities[i];
+    for (Commodity commodity in _commodities) {
       if (commodity.getValue <= 0) continue;
-      var tempRow = DataRow(
-          cells: [
-            DataCell(Text(
-              commodity.getName.toCapitalized(),
-              style: TextStyle(fontSize: 20),
-            )),
-            DataCell(Text(
-              totalFormat.format(
-                  commodity.getValue * currencyRates[_chosenCurrency]!),
-              style: TextStyle(fontSize: 20),
-            )),
-            DataCell(Text(
-              totalFormat.format(commodity.getWeight),
-              style: TextStyle(fontSize: 20),
-            )),
-            DataCell(Text(
-              totalFormat.format(
-                  commodity.getLatestPrice * currencyRates[_chosenCurrency]!),
-              style: TextStyle(fontSize: 20),
-            ))
-          ],
-          color: MaterialStateColor.resolveWith(
-                (states) =>
-            (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
-          ));
+      var tempRow = DataRow(cells: [
+        DataCell(Text(
+          commodity.getName.toCapitalized(),
+          style: TextStyle(fontSize: 20),
+        )),
+        DataCell(Text(
+          totalFormat.format(
+              commodity.getValue * currencyRates[_chosenCurrency]!),
+          style: TextStyle(fontSize: 20),
+        )),
+        DataCell(Text(
+          totalFormat.format(commodity.getWeight),
+          style: TextStyle(fontSize: 20),
+        )),
+        DataCell(Text(
+          totalFormat.format(
+              commodity.getLatestPrice * currencyRates[_chosenCurrency]!),
+          style: TextStyle(fontSize: 20),
+        ))
+      ]);
       dataRows.add(tempRow);
     }
     dataRows.add(DataRow(cells: [
-      DataCell(Text('Total', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
-      DataCell(Text(totalFormat.format(_totalValue * currencyRates[_chosenCurrency]!),
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
+      DataCell(Text('Total', style: TextStyle(fontSize: 20))),
+      DataCell(Text(
+          totalFormat.format(_totalValue * currencyRates[_chosenCurrency]!),
+          style: TextStyle(fontSize: 20))),
       DataCell(Text(totalFormat.format(_totalWeight),
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
+          style: TextStyle(fontSize: 20))),
       DataCell(Text(''))
     ]));
     return dataRows;
   }
-
 
   Future<void> getRates() async {
     currencyRates['EUR'] = await fx.getCurrencyConverted('USD', 'EUR', 1);
