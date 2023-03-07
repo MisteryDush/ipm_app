@@ -156,37 +156,42 @@ class User {
   List<DataRow> getCommoditiesRows() {
     var totalFormat = NumberFormat("###,###.0#", "en_US");
     List<DataRow> dataRows = [];
-    for (Commodity commodity in _commodities) {
+    for (int i = 0; i < _commodities.length; i++) {
+      Commodity commodity = _commodities[i];
       if (commodity.getValue <= 0) continue;
-      var tempRow = DataRow(cells: [
-        DataCell(Text(
-          commodity.getName.toCapitalized(),
-          style: TextStyle(fontSize: 20),
-        )),
-        DataCell(Text(
-          totalFormat.format(
-              commodity.getValue * currencyRates[_chosenCurrency]!),
-          style: TextStyle(fontSize: 20),
-        )),
-        DataCell(Text(
-          totalFormat.format(commodity.getWeight),
-          style: TextStyle(fontSize: 20),
-        )),
-        DataCell(Text(
-          totalFormat.format(
-              commodity.getLatestPrice * currencyRates[_chosenCurrency]!),
-          style: TextStyle(fontSize: 20),
-        ))
-      ]);
+      var tempRow = DataRow(
+          cells: [
+            DataCell(Text(
+              commodity.getName.toCapitalized(),
+              style: TextStyle(fontSize: 20),
+            )),
+            DataCell(Text(
+              totalFormat.format(
+                  commodity.getValue * currencyRates[_chosenCurrency]!),
+              style: TextStyle(fontSize: 20),
+            )),
+            DataCell(Text(
+              totalFormat.format(commodity.getWeight),
+              style: TextStyle(fontSize: 20),
+            )),
+            DataCell(Text(
+              totalFormat.format(
+                  commodity.getLatestPrice * currencyRates[_chosenCurrency]!),
+              style: TextStyle(fontSize: 20),
+            ))
+          ],
+          color: MaterialStateColor.resolveWith(
+                (states) =>
+            (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
+          ));
       dataRows.add(tempRow);
     }
     dataRows.add(DataRow(cells: [
-      DataCell(Text('Total', style: TextStyle(fontSize: 20))),
-      DataCell(Text(
-          totalFormat.format(_totalValue * currencyRates[_chosenCurrency]!),
-          style: TextStyle(fontSize: 20))),
+      DataCell(Text('Total', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
+      DataCell(Text(totalFormat.format(_totalValue * currencyRates[_chosenCurrency]!),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
       DataCell(Text(totalFormat.format(_totalWeight),
-          style: TextStyle(fontSize: 20))),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
       DataCell(Text(''))
     ]));
     return dataRows;
