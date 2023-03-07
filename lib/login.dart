@@ -6,7 +6,7 @@ import 'menu.dart';
 void main() => runApp(const MyApp());
 
 const Color textColorGold = Color.fromRGBO(209, 142, 48, 1);
-const Color backgroundColorIndigo = Color.fromRGBO(49, 0, 94, 100);
+const Color backgroundColorIndigo = Color.fromRGBO(49, 0, 94, 1);
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/menu': (context) => Menu(),
-        '/settings': (context) => Settings(),
+        '/settings': (context) => SettingsPage(),
       },
       home: const Scaffold(
         backgroundColor: backgroundColorIndigo,
