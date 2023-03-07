@@ -38,6 +38,7 @@ dependencies:
   requests: ^4.7.0
   intl: ^0.18.0
   shared_preferences: ^2.0.18
+  forex_conversion: ^0.0.3
 
 dev_dependencies:
   flutter_test:
