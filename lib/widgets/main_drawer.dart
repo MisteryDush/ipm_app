@@ -21,7 +21,9 @@ class MainDrawer extends StatelessWidget{
               style: TextStyle(color: Colors.white),
             ),
             onTap: () {
-              Navigator.pop(context);
+              if(ModalRoute.of(context)?.settings.name != '/menu') {
+                Navigator.popAndPushNamed(context, '/menu');
+              }
             },
           ),
           ListTile(
@@ -78,6 +80,22 @@ class MainDrawer extends StatelessWidget{
             ),
             onTap: () {
               Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.settings,
+              size: 30,
+              color: textColorGold,
+            ),
+            title: const Text(
+              'Settings',
+              style: TextStyle(color: Colors.white),
+            ),
+            onTap: () {
+              if(ModalRoute.of(context)?.settings.name != '/settings') {
+                Navigator.popAndPushNamed(context, '/settings');
+              }
             },
           )
         ],
