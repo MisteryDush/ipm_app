@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:ipm_app/api/commodity.dart';
 import 'package:ipm_app/api/injection.dart';
 import 'package:requests/requests.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class User {
   String _token = '';
@@ -107,6 +108,8 @@ class User {
   }
 
   Future<void> setup(String username, String password) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _chosenCurrency = prefs.getString('Currency')!;
     var r = await login(username, password);
     if (r[0] == 200) {
       _setToken = r[1]['token'];
