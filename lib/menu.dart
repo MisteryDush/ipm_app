@@ -57,10 +57,22 @@ class Menu extends StatelessWidget {
                     Padding(
                         padding: EdgeInsets.zero,
                         child: Column(children: [
+                          Text('Value:',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontStyle: FontStyle.italic,
+                            ),
+                          ),
                           Text(
                             '${totalFormat.format(user.getTotalValue)} ${user.getChosenCurrency}',
                             style: TextStyle(
                               fontSize: 30,
+                            ),
+                          ),
+                          Text('Appreciation:',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontStyle: FontStyle.italic,
                             ),
                           ),
                           Text(
@@ -68,6 +80,12 @@ class Menu extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 20,
                               color: getColor(user.getValueDifference),
+                            ),
+                          ),
+                          Text('Percentage:',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontStyle: FontStyle.italic,
                             ),
                           ),
                           Text(
