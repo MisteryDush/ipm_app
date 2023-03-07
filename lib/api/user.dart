@@ -25,6 +25,10 @@ class User {
   String _chosenCurrency = 'USD';
   final fx = Forex();
 
+  String get getChosenCurrency {
+    return _chosenCurrency;
+  }
+
   set setChosenCurrency(String newCurrency) {
     _chosenCurrency = newCurrency;
   }
@@ -160,7 +164,8 @@ class User {
           style: TextStyle(fontSize: 20),
         )),
         DataCell(Text(
-          totalFormat.format(commodity.getValue * currencyRates[_chosenCurrency]!),
+          totalFormat.format(
+              commodity.getValue * currencyRates[_chosenCurrency]!),
           style: TextStyle(fontSize: 20),
         )),
         DataCell(Text(
@@ -168,7 +173,8 @@ class User {
           style: TextStyle(fontSize: 20),
         )),
         DataCell(Text(
-          totalFormat.format(commodity.getLatestPrice * currencyRates[_chosenCurrency]!),
+          totalFormat.format(
+              commodity.getLatestPrice * currencyRates[_chosenCurrency]!),
           style: TextStyle(fontSize: 20),
         ))
       ]);
@@ -176,7 +182,8 @@ class User {
     }
     dataRows.add(DataRow(cells: [
       DataCell(Text('Total', style: TextStyle(fontSize: 20))),
-      DataCell(Text(totalFormat.format(_totalValue * currencyRates[_chosenCurrency]!),
+      DataCell(Text(
+          totalFormat.format(_totalValue * currencyRates[_chosenCurrency]!),
           style: TextStyle(fontSize: 20))),
       DataCell(Text(totalFormat.format(_totalWeight),
           style: TextStyle(fontSize: 20))),
