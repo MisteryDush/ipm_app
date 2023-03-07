@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:ipm_app/settings.dart';
 import 'api/user.dart';
 import 'menu.dart';
+import 'injections_page.dart';
+import 'historical_vault_page.dart';
+import 'cost_charges_page.dart';
+import 'reports_page.dart';
 
 void main() => runApp(const MyApp());
 
@@ -21,6 +25,10 @@ class MyApp extends StatelessWidget {
       routes: {
         '/menu': (context) => Menu(),
         '/settings': (context) => SettingsPage(),
+        '/historical_vault_page': (context) => HistoricalVaultPage(),
+        '/cost_charges_page': (context) => CostChargesPage(),
+        '/injections_page': (context) => InjectionsPage(),
+        '/reports_page': (context) => ReportsPage(),
       },
       home: const Scaffold(
         backgroundColor: backgroundColorIndigo,

@@ -41,7 +41,9 @@ class MainDrawer extends StatelessWidget{
                     style: TextStyle(color: Colors.white),
                   ),
                   onTap: () {
-                    Navigator.pop(context);
+                    if(ModalRoute.of(context)?.settings.name != '/historical_vault_page') {
+                      Navigator.popAndPushNamed(context, '/historical_vault_page');
+                    }
                   },
                 ),
                 ListTile(
@@ -55,7 +57,9 @@ class MainDrawer extends StatelessWidget{
                     style: TextStyle(color: Colors.white),
                   ),
                   onTap: () {
-                    Navigator.pop(context);
+                    if(ModalRoute.of(context)?.settings.name != '/cost_charges_page') {
+                      Navigator.popAndPushNamed(context, '/cost_charges_page');
+                    }
                   },
                 ),
                 ListTile(
@@ -69,7 +73,9 @@ class MainDrawer extends StatelessWidget{
                     style: TextStyle(color: Colors.white),
                   ),
                   onTap: () {
-                    Navigator.pop(context);
+                    if(ModalRoute.of(context)?.settings.name != '/injections_page') {
+                      Navigator.popAndPushNamed(context, '/injections_page');
+                    }
                   },
                 ),
                 ListTile(
@@ -83,7 +89,9 @@ class MainDrawer extends StatelessWidget{
                     style: TextStyle(color: Colors.white),
                   ),
                   onTap: () {
-                    Navigator.pop(context);
+                    if(ModalRoute.of(context)?.settings.name != '/reports_page') {
+                      Navigator.popAndPushNamed(context, '/reports_page');
+                    }
                   },
                 ),
               ],
