@@ -3,6 +3,8 @@ import 'package:ipm_app/widgets/main_app_bar.dart';
 import 'package:ipm_app/widgets/main_drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'api/user.dart';
+
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -23,6 +25,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    User user = User.instance;
+
     return Scaffold(
         appBar: MainAppBar(_scaffoldKey),
         body: Scaffold(
@@ -41,9 +45,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   value: _selectedCurrency,
                   onChanged: (String? newValue) {
                     setState(() async {
-                      final prefs = await SharedPreferences.getInstance();
                       _selectedCurrency = newValue;
+                      final prefs = await SharedPreferences.getInstance();
                       prefs.setString('Currency', '$newValue');
+                      user.setChosenCurrency = newValue!;
                     });
                   },
                   items:
