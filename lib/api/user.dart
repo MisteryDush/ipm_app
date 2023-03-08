@@ -16,7 +16,14 @@ class User {
   double _valueDifferencePercentage = 0.0;
   final _commodities = [];
   final _injections = [];
-  Map<String, double> currencyRates = {'USD': 1.0,
+  final Map<String, double> weightRates = {
+    'Toz': 1.0,
+    'Kilo': 0.0311034768,
+    'Grams': 31.1034768
+  };
+
+  Map<String, double> currencyRates = {
+    'USD': 1.0,
     'EUR': 0.0,
     'GBP': 0.0,
     'MYR': 0.0,
@@ -24,10 +31,19 @@ class User {
     'AUD': 0.0
   };
   String _chosenCurrency = 'USD';
+  String _chosenWeight = 'Toz';
   final fx = Forex();
 
   String get getChosenCurrency {
     return _chosenCurrency;
+  }
+
+  set setChosenWeight(String newWeight) {
+    _chosenWeight = newWeight;
+  }
+
+  get getChosenWeight{
+    return _chosenWeight;
   }
 
   set setChosenCurrency(String newCurrency) {
@@ -97,13 +113,13 @@ class User {
 
   Future<List> login(String username, String password) async {
     var r =
-    await Requests.post('http://portal.demo.ipm.capital/mobileApi/login',
-        body: {
-          'username': username,
-          'password': password,
-        },
-        bodyEncoding: RequestBodyEncoding.FormURLEncoded,
-        timeoutSeconds: 20);
+        await Requests.post('http://portal.demo.ipm.capital/mobileApi/login',
+            body: {
+              'username': username,
+              'password': password,
+            },
+            bodyEncoding: RequestBodyEncoding.FormURLEncoded,
+            timeoutSeconds: 20);
     return [r.statusCode, r.json()];
   }
 
@@ -139,8 +155,7 @@ class User {
           double.parse(commodity['totalCharges']),
           double.parse(commodity['totalChargesPercentage'])));
     }
-    json['injectionData'].forEach((k, v) =>
-    (_injections.add(Injection(
+    json['injectionData'].forEach((k, v) => (_injections.add(Injection(
         DateTime.parse(v['initialDate']),
         double.parse(v['currentInvestment']),
         double.parse(v['initialInvestment']),
@@ -148,9 +163,9 @@ class User {
         v['valueChangePercentage'].toDouble(),
         double.parse(v['chargePercentage'])))));
     _lastTotalValue = double.parse(json['historicPerformance']['allTimeData']
-    ['allMetalsData']['data'][json['historicPerformance']['allTimeData']
-    ['allMetalsData']['data']
-        .length -
+        ['allMetalsData']['data'][json['historicPerformance']['allTimeData']
+                ['allMetalsData']['data']
+            .length -
         1]);
     _valueDifference = _totalValue - _lastTotalValue;
     _valueDifferencePercentage = (_valueDifference) / _lastTotalValue * 100;
@@ -169,12 +184,12 @@ class User {
               style: TextStyle(fontSize: 20),
             )),
             DataCell(Text(
-              totalFormat.format(
-                  commodity.getValue * currencyRates[_chosenCurrency]!),
+              totalFormat
+                  .format(commodity.getValue * currencyRates[_chosenCurrency]!),
               style: TextStyle(fontSize: 20),
             )),
             DataCell(Text(
-              totalFormat.format(commodity.getWeight),
+              totalFormat.format(commodity.getWeight * weightRates[_chosenWeight]!),
               style: TextStyle(fontSize: 20),
             )),
             DataCell(Text(
@@ -184,16 +199,17 @@ class User {
             ))
           ],
           color: MaterialStateColor.resolveWith(
-                (states) =>
-            (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
+            (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
           ));
       dataRows.add(tempRow);
     }
     dataRows.add(DataRow(cells: [
-      DataCell(Text('Total', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
-      DataCell(Text(totalFormat.format(_totalValue * currencyRates[_chosenCurrency]!),
+      DataCell(Text('Total',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
-      DataCell(Text(totalFormat.format(_totalWeight),
+      DataCell(Text(
+          totalFormat.format(_totalValue * currencyRates[_chosenCurrency]!),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
+      DataCell(Text(totalFormat.format(_totalWeight * weightRates[_chosenWeight]!),
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
       DataCell(Text(''))
     ]));
