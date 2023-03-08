@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'api/user.dart';
 
 
+
 class SettingsPage extends StatefulWidget {
   @override
   _SettingsPageState createState() => _SettingsPageState();
@@ -51,47 +52,64 @@ class _SettingsPageState extends State<SettingsPage> {
             children: <Widget>[
               Text(
                 'Currency',
-                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold,),
               ),
-              DropdownButton<String>(
-                value: _selectedCurrency,
-                onChanged: (String? newValue) async {
-                  final prefs = await SharedPreferences.getInstance();
-                  setState(() {
-                    _selectedCurrency = newValue;
-                    prefs.setString('Currency', '$newValue');
-                    user.setChosenCurrency = _selectedCurrency!;
-                  });
-                },
-                items:
-                _currencies.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  color: Color(0XFF31005E)
+                ),
+                child: DropdownButton<String>(
+                  value: _selectedCurrency,
+                  onChanged: (String? newValue) async {
+                    final prefs = await SharedPreferences.getInstance();
+                    setState(() {
+                      _selectedCurrency = newValue;
+                      prefs.setString('Currency', '$newValue');
+                      user.setChosenCurrency = _selectedCurrency!;
+                    });
+                  },
+                  underline: SizedBox(),
+                  items:
+                  _currencies.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(value, style: TextStyle(color: Colors.white),),
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
               SizedBox(height: 16.0),
               Text(
                 'Weight',
                 style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
               ),
-              DropdownButton<String>(
-                value: _selectedWeight,
-                onChanged: (String? newValue) async {
-                  final prefs = await SharedPreferences.getInstance();
-                  setState(() {
-                    _selectedWeight = newValue;
-                    prefs.setString('Weight', '$newValue');
-                    user.setChosenCurrency = _selectedCurrency!;
-                  });
-                },
-                items: _weights.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.black),
+                ),
+                child: DropdownButton<String>(
+                  value: _selectedWeight,
+                  onChanged: (String? newValue) async {
+                    final prefs = await SharedPreferences.getInstance();
+                    setState(() {
+                      _selectedWeight = newValue;
+                      prefs.setString('Weight', '$newValue');
+                      user.setChosenCurrency = _selectedCurrency!;
+                    });
+                  },
+                  underline: SizedBox(),
+                  items: _weights.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
               ),
             ],
           ),
