@@ -130,7 +130,7 @@ class Menu extends StatelessWidget {
                                         ),
                                         DataColumn(
                                           label: Text(
-                                            'Value',
+                                            'Value (${user.getChosenCurrency})',
                                             style: TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
