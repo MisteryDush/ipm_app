@@ -22,16 +22,16 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget{
                 _scaffoldKey.currentState?.openEndDrawer();
               }
             }),
-        toolbarHeight: 70,
+        toolbarHeight: 80,
         title: Row(children: [
           Image.asset(
             'assets/images/logo_and_name.png',
-            height: 50,
+            height: 60,
           ),
         ]));
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(80);
 
 }
