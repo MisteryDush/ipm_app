@@ -99,7 +99,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     setState(() {
                       _selectedWeight = newValue;
                       prefs.setString('Weight', '$newValue');
-                      user.setChosenCurrency = _selectedCurrency!;
+                      user.setChosenWeight = newValue!;
                     });
                   },
                   underline: SizedBox(),
