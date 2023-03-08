@@ -140,7 +140,7 @@ class Menu extends StatelessWidget {
                                         ),
                                         DataColumn(
                                           label: Text(
-                                            'Weight',
+                                            'Weight (${user.getChosenWeight})',
                                             style: TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
