@@ -50,14 +50,18 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Text(
-                'Currency',
-                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold,),
+              Padding(padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Center(
+                  child: Text(
+                    'Currency',
+                      style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)
+                  ),
+                ),
               ),
               Container(
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: Colors.black),
-                  color: Color(0XFF31005E)
                 ),
                 child: DropdownButton<String>(
                   value: _selectedCurrency,
@@ -76,16 +80,20 @@ class _SettingsPageState extends State<SettingsPage> {
                       value: value,
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(value, style: TextStyle(color: Colors.white),),
+                        child: Text(value),
                       ),
                     );
                   }).toList(),
                 ),
               ),
-              SizedBox(height: 16.0),
-              Text(
-                'Weight',
-                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+              SizedBox(height: 10),
+              Padding(padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Center(
+                  child: Text(
+                      'Weight',
+                      style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)
+                  ),
+                ),
               ),
               Container(
                 decoration: BoxDecoration(
@@ -106,7 +114,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   items: _weights.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value),
+                        child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(value),
+                        ),
                     );
                   }).toList(),
                 ),
