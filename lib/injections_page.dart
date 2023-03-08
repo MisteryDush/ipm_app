@@ -48,6 +48,44 @@ class _InjectionsPageState extends State<InjectionsPage> {
                       ),
                     )
                   ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  child: Column(
+                    children: [
+                      RichText(
+                        textAlign: TextAlign.left,
+                        text: TextSpan(
+                          style: TextStyle(fontSize: 12, color: Colors.black),
+                          children: [
+                            TextSpan(
+                              text: 'Note: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            TextSpan(
+                              text: 'Valuation costs are based purely on '
+                            ),
+                            TextSpan(
+                              text: 'SGD paper prices',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            TextSpan(
+                              text:
+                              ' and may not accurately value your physical metals, '
+                                  'as premiums on physical products can vary.\n'
+                            ),
+                            TextSpan(
+                              text: 'Note: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            TextSpan(
+                              text: 'Valuations are presently updated on an hourly basis.',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
