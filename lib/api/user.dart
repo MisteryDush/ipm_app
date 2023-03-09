@@ -125,7 +125,8 @@ class User {
 
   Future<void> setup(String username, String password) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    _chosenCurrency = prefs.getString('Currency')!;
+    _chosenCurrency = prefs.getString('Currency') ?? 'USD';
+    _chosenWeight = prefs.getString('Weight') ?? 'Toz';
     var r = await login(username, password);
     if (r[0] == 200) {
       _setToken = r[1]['token'];
