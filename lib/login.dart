@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ipm_app/settings.dart';
 import 'api/user.dart';
 import 'menu.dart';
@@ -7,7 +8,11 @@ import 'historical_vault_page.dart';
 import 'cost_charges_page.dart';
 import 'reports_page.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((value) => runApp(MyApp()));
+  runApp(const MyApp());
+}
 
 const Color textColorGold = Color.fromRGBO(209, 142, 48, 1);
 const Color backgroundColorIndigo = Color.fromRGBO(49, 0, 94, 1);
@@ -106,7 +111,10 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 50, vertical: 10),
                       side: const BorderSide(color: textColorGold)),
-                  child: const Text('Login', style: TextStyle(fontSize: 18),),
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(fontSize: 18),
+                  ),
                   onPressed: () async {
                     if (nameController.text.isEmpty |
                         passwordController.text.isEmpty) {
@@ -188,7 +196,8 @@ class _LoginPageState extends State<LoginPage> {
                                       // Some text
                                       Text(
                                         'Invalid credentials, try again.',
-                                        style: TextStyle(color: textColorGold, fontSize: 14),
+                                        style: TextStyle(
+                                            color: textColorGold, fontSize: 14),
                                       )
                                     ],
                                   ),
