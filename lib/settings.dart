@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ipm_app/widgets/main_app_bar.dart';
 import 'package:ipm_app/widgets/main_drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/user.dart';
 
-
-
 class SettingsPage extends StatefulWidget {
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
-
 
 class _SettingsPageState extends State<SettingsPage> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
@@ -48,17 +46,18 @@ class _SettingsPageState extends State<SettingsPage> {
         body: Padding(
           padding: EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Padding(padding: const EdgeInsets.symmetric(vertical: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Center(
-                  child: Text(
-                    'Currency',
-                      style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)
-                  ),
+                  child: Text('Currency',
+                      style: TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.bold)),
                 ),
               ),
               Container(
+                width: 120,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: Colors.black),
@@ -75,27 +74,35 @@ class _SettingsPageState extends State<SettingsPage> {
                   },
                   underline: SizedBox(),
                   items:
-                  _currencies.map<DropdownMenuItem<String>>((String value) {
+                      _currencies.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(value),
+                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        child: Row(children: [
+                          Text(
+                            value,
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(width: 10,),
+                          SvgPicture.asset('assets/flags/$value.svg', width: 30),
+                        ]),
                       ),
                     );
                   }).toList(),
                 ),
               ),
               SizedBox(height: 10),
-              Padding(padding: const EdgeInsets.symmetric(vertical: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Center(
-                  child: Text(
-                      'Weight',
-                      style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)
-                  ),
+                  child: Text('Weight',
+                      style: TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.bold)),
                 ),
               ),
               Container(
+                width: 120,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: Colors.black),
@@ -114,10 +121,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   items: _weights.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                        child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(value),
-                        ),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(27, 0, 0, 0),
+                        child: Text(value),
+                      ),
                     );
                   }).toList(),
                 ),
