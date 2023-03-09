@@ -71,7 +71,7 @@ class Menu extends StatelessWidget {
                           ),
                           Text('Appreciation:',
                             style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 18,
                               fontStyle: FontStyle.italic,
                             ),
                           ),
@@ -84,7 +84,7 @@ class Menu extends StatelessWidget {
                           ),
                           Text('Percentage:',
                             style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 18,
                               fontStyle: FontStyle.italic,
                             ),
                           ),

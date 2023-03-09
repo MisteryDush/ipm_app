@@ -103,6 +103,10 @@ class MainDrawer extends StatelessWidget{
               size: 30,
               color: textColorGold,
             ),
+            title: const Text(
+              'Settings',
+              style: TextStyle(color: Colors.white),
+            ),
             onTap: () {
               if(ModalRoute.of(context)?.settings.name != '/settings') {
                 Navigator.popAndPushNamed(context, '/settings');
