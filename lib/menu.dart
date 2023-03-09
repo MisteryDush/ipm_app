@@ -122,7 +122,7 @@ class Menu extends StatelessWidget {
                                           label: Text(
                                             'Commodity',
                                             style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 24,
                                               fontWeight: FontWeight.bold,
                                               color: textColorGold,
                                             ),
@@ -132,7 +132,7 @@ class Menu extends StatelessWidget {
                                           label: Text(
                                             'Value (${user.getChosenCurrency})',
                                             style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 24,
                                               fontWeight: FontWeight.bold,
                                               color: textColorGold,
                                             ),
@@ -142,7 +142,7 @@ class Menu extends StatelessWidget {
                                           label: Text(
                                             'Weight (${user.getChosenWeight})',
                                             style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 24,
                                               fontWeight: FontWeight.bold,
                                               color: textColorGold,
                                             ),
@@ -152,7 +152,7 @@ class Menu extends StatelessWidget {
                                           label: Text(
                                             'Latest\nMetal Price',
                                             style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 24,
                                               fontWeight: FontWeight.bold,
                                               color: textColorGold,
                                             ),

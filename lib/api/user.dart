@@ -182,21 +182,21 @@ class User {
           cells: [
             DataCell(Text(
               commodity.getName.toCapitalized(),
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 24),
             )),
             DataCell(Text(
               totalFormat
                   .format(commodity.getValue * currencyRates[_chosenCurrency]!),
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 24),
             )),
             DataCell(Text(
               totalFormat.format(commodity.getWeight * weightRates[_chosenWeight]!),
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 24),
             )),
             DataCell(Text(
               totalFormat.format(
                   commodity.getLatestPrice * currencyRates[_chosenCurrency]!),
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 24),
             ))
           ],
           color: MaterialStateColor.resolveWith(
@@ -206,12 +206,12 @@ class User {
     }
     dataRows.add(DataRow(cells: [
       DataCell(Text('Total',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
       DataCell(Text(
           totalFormat.format(_totalValue * currencyRates[_chosenCurrency]!),
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
       DataCell(Text(totalFormat.format(_totalWeight * weightRates[_chosenWeight]!),
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
       DataCell(Text(''))
     ]));
     return dataRows;
