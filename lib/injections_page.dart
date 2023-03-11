@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ipm_app/widgets/main_app_bar.dart';
 import 'package:ipm_app/widgets/main_drawer.dart';
 
+import 'api/user.dart';
 import 'login.dart';
 
 
@@ -11,6 +12,7 @@ class InjectionsPage extends StatefulWidget {
 }
 
 class _InjectionsPageState extends State<InjectionsPage> {
+  User user = User.instance;
 
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
 
@@ -66,7 +68,7 @@ class _InjectionsPageState extends State<InjectionsPage> {
                               text: 'Valuation costs are based purely on '
                             ),
                             TextSpan(
-                              text: 'SGD paper prices',
+                              text: '${user.getChosenCurrency} paper prices',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             TextSpan(
@@ -85,6 +87,86 @@ class _InjectionsPageState extends State<InjectionsPage> {
                         ),
                       ),
                     ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: FittedBox(
+                    child: SizedBox(
+                      height: 450,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.black,
+                              width: 2,
+                            ),
+                          ),
+                          child: DataTable(
+                            headingRowColor:
+                            MaterialStateColor.resolveWith(
+                                  (states) => backgroundColorIndigo,
+                            ),
+                            dividerThickness: 2,
+                            columns: [
+                              DataColumn(
+                                label: Text(
+                                  'Initial Invest\nDate',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: textColorGold,
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'Current\n${user.getChosenCurrency} Value',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: textColorGold,
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  '${user.getChosenCurrency} Value\nChange',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: textColorGold,
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'Value Change\nPercentage',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: textColorGold,
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'Initial ${user.getChosenCurrency}\nPaper Valuation',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: textColorGold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                            rows: [],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 )
               ],
