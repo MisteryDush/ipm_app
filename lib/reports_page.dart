@@ -26,14 +26,14 @@ class _ReportsPageState extends State<ReportsPage> {
             height: 1000,
             child: Column(
               children: [
-                Padding(padding: EdgeInsets.symmetric(vertical: 20),
+                Padding(padding: EdgeInsets.symmetric(vertical: 25),
                   child: Text(
                     'Reports',
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: textColorGold,
                       fontWeight: FontWeight.bold,
-                      fontSize: 24,
+                      fontSize: 30,
                     ),
                   ),
                 ),

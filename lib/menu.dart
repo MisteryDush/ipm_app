@@ -31,14 +31,14 @@ class Menu extends StatelessWidget {
                 child: Column(
                   children: [
                     Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20),
+                        padding: EdgeInsets.symmetric(vertical: 25),
                         child: Text(
                           'Welcome\n${user.getName}!',
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             color: textColorGold,
                             fontWeight: FontWeight.bold,
-                            fontSize: 24,
+                            fontSize: 30,
                           ),
                         )),
                     Row(

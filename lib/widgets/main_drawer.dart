@@ -32,17 +32,17 @@ class MainDrawer extends StatelessWidget{
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.area_chart_outlined,
+                    Icons.price_change_outlined,
                     size: 30,
                     color: textColorGold,
                   ),
                   title: const Text(
-                    'Historical Vault Valuations',
+                    'Injections Page',
                     style: TextStyle(color: Colors.white),
                   ),
                   onTap: () {
-                    if(ModalRoute.of(context)?.settings.name != '/historical_vault_page') {
-                      Navigator.popAndPushNamed(context, '/historical_vault_page');
+                    if(ModalRoute.of(context)?.settings.name != '/injections_page') {
+                      Navigator.popAndPushNamed(context, '/injections_page');
                     }
                   },
                 ),
@@ -64,17 +64,17 @@ class MainDrawer extends StatelessWidget{
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.price_change_outlined,
+                    Icons.area_chart_outlined,
                     size: 30,
                     color: textColorGold,
                   ),
                   title: const Text(
-                    'Injections Page',
+                    'Historical Vault Valuations',
                     style: TextStyle(color: Colors.white),
                   ),
                   onTap: () {
-                    if(ModalRoute.of(context)?.settings.name != '/injections_page') {
-                      Navigator.popAndPushNamed(context, '/injections_page');
+                    if(ModalRoute.of(context)?.settings.name != '/historical_vault_page') {
+                      Navigator.popAndPushNamed(context, '/historical_vault_page');
                     }
                   },
                 ),
@@ -110,6 +110,22 @@ class MainDrawer extends StatelessWidget{
             onTap: () {
               if(ModalRoute.of(context)?.settings.name != '/settings') {
                 Navigator.popAndPushNamed(context, '/settings');
+              }
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.logout,
+              size: 30,
+              color: textColorGold,
+            ),
+            title: const Text(
+              'Logout',
+              style: TextStyle(color: Colors.white),
+            ),
+            onTap: () {
+              if(ModalRoute.of(context)?.settings.name != '/') {
+                Navigator.popAndPushNamed(context, '/');
               }
             },
           )

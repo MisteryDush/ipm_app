@@ -28,14 +28,14 @@ class _InjectionsPageState extends State<InjectionsPage> {
             height: 1000,
             child: Column(
               children: [
-                Padding(padding: EdgeInsets.symmetric(vertical: 20),
+                Padding(padding: EdgeInsets.symmetric(vertical: 25),
                   child: Text(
                     'Injections',
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: textColorGold,
                       fontWeight: FontWeight.bold,
-                      fontSize: 24,
+                      fontSize: 30,
                     ),
                   ),
                 ),
