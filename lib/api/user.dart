@@ -283,7 +283,7 @@ class User {
   List<DataRow> getCostChargesRows() {
     double _totalCostPerDay = 0.0;
     double _totalChargePercent = 0.0;
-    var totalFormat = NumberFormat("###,###.0#", "en_US");
+    var totalFormat = NumberFormat("###,##0.0#", "en_US");
     List<DataRow> dataRows = [];
     for (int i = 0; i < _metalCharges.length; i++) {
       MetalCharge metalCharge  = _metalCharges[i];
@@ -302,8 +302,8 @@ class User {
               style: TextStyle(fontSize: 30),
             )),
             DataCell(Text(
-              totalFormat
-                  .format(metalCharge.getChargePercent),
+              '${totalFormat
+                  .format(metalCharge.getChargePercent)}%',
               style: TextStyle(fontSize: 30),
             )),
             DataCell(Text(
@@ -329,7 +329,7 @@ class User {
           totalFormat.format(_totalCostPerDay * currencyRates[_chosenCurrency]!),
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold))),
       DataCell(Text(
-          totalFormat.format(_totalChargePercent),
+          '${totalFormat.format(_totalChargePercent)}%',
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold))),
       DataCell(Text(
           totalFormat.format(_totalWeight * weightRates[_chosenWeight]!),
