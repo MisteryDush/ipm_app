@@ -141,7 +141,7 @@ class _CostChargesPageState extends State<CostChargesPage> {
                                 ),
                               ),
                             ],
-                            rows: [],
+                            rows: user.getCostChargesRows(),
                           ),
                         ),
                       ),

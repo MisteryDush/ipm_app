@@ -269,6 +269,63 @@ class User {
       injectionRows;
   }
 
+  List<DataRow> getCostChargesRows() {
+    var totalFormat = NumberFormat("###,###.0#", "en_US");
+    List<DataRow> dataRows = [];
+    for (int i = 0; i < _commodities.length; i++) {
+      Commodity commodity = _commodities[i];
+      if (commodity.getValue <= 0) continue;
+      var tempRow = DataRow(
+          cells: [
+            DataCell(Text(
+              commodity.getName.toCapitalized(),
+              style: TextStyle(fontSize: 24),
+            )),
+            // DataCell(Text(
+            //   totalFormat
+            //       .format(commodity.getValue * currencyRates[_chosenCurrency]!),
+            //   style: TextStyle(fontSize: 24),
+            // )),
+            // DataCell(Text(
+            //   totalFormat
+            //       .format(commodity.getValue * currencyRates[_chosenCurrency]!),
+            //   style: TextStyle(fontSize: 24),
+            // )),
+            DataCell(Text(
+              totalFormat
+                  .format(commodity.getWeight * weightRates[_chosenWeight]!),
+              style: TextStyle(fontSize: 24),
+            )),
+            DataCell(Text(
+              totalFormat.format(
+                  commodity.getLatestPrice * currencyRates[_chosenCurrency]!),
+              style: TextStyle(fontSize: 24),
+            ))
+          ],
+          color: MaterialStateColor.resolveWith(
+                (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
+          ));
+      dataRows.add(tempRow);
+    }
+    dataRows.add(DataRow(cells: [
+      DataCell(Text('Total',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
+      // DataCell(Text(
+      //     totalFormat.format(_totalValue * currencyRates[_chosenCurrency]!),
+      //     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
+      // DataCell(Text(
+      //     totalFormat.format(_totalValue * currencyRates[_chosenCurrency]!),
+      //     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
+      DataCell(Text(
+          totalFormat.format(_totalWeight * weightRates[_chosenWeight]!),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
+      DataCell(Text(
+          totalFormat.format(_totalValue * currencyRates[_chosenCurrency]!),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
+    ]));
+    return dataRows;
+  }
+
   Future<void> getRates() async {
     currencyRates['EUR'] = await fx.getCurrencyConverted('USD', 'EUR', 1);
     currencyRates['GBP'] = await fx.getCurrencyConverted('USD', 'GBP', 1);
