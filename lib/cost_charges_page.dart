@@ -72,7 +72,7 @@ class _CostChargesPageState extends State<CostChargesPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 20),
                   child: FittedBox(
                     child: SizedBox(
-                      height: 450,
+                      height: 700,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: Container(
@@ -84,6 +84,8 @@ class _CostChargesPageState extends State<CostChargesPage> {
                             ),
                           ),
                           child: DataTable(
+                            headingRowHeight: 100,
+                            dataRowHeight: 100,
                             headingRowColor:
                             MaterialStateColor.resolveWith(
                                   (states) => backgroundColorIndigo,
@@ -94,7 +96,7 @@ class _CostChargesPageState extends State<CostChargesPage> {
                                 label: Text(
                                   'Commodity',
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 30,
                                     fontWeight: FontWeight.bold,
                                     color: textColorGold,
                                   ),
@@ -104,7 +106,7 @@ class _CostChargesPageState extends State<CostChargesPage> {
                                 label: Text(
                                   'Cost Per Day',
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 30,
                                     fontWeight: FontWeight.bold,
                                     color: textColorGold,
                                   ),
@@ -114,7 +116,7 @@ class _CostChargesPageState extends State<CostChargesPage> {
                                 label: Text(
                                   'Vault % Cost',
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 30,
                                     fontWeight: FontWeight.bold,
                                     color: textColorGold,
                                   ),
@@ -124,7 +126,7 @@ class _CostChargesPageState extends State<CostChargesPage> {
                                 label: Text(
                                   'Weight (${user.getChosenWeight})',
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 30,
                                     fontWeight: FontWeight.bold,
                                     color: textColorGold,
                                   ),
@@ -134,7 +136,7 @@ class _CostChargesPageState extends State<CostChargesPage> {
                                 label: Text(
                                   'Value (${user.getChosenCurrency})',
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 30,
                                     fontWeight: FontWeight.bold,
                                     color: textColorGold,
                                   ),
