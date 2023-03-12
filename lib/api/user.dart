@@ -3,6 +3,7 @@ import 'package:forex_conversion/forex_conversion.dart';
 import 'package:intl/intl.dart';
 import 'package:ipm_app/api/commodity.dart';
 import 'package:ipm_app/api/injection.dart';
+import 'package:ipm_app/api/metal_charge.dart';
 import 'package:requests/requests.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,6 +17,7 @@ class User {
   double _valueDifferencePercentage = 0.0;
   final _commodities = [];
   final _injections = [];
+  final _metalCharges = [];
   final Map<String, double> weightRates = {
     'Toz': 1.0,
     'Kilo': 0.0311034768,
@@ -113,13 +115,13 @@ class User {
 
   Future<List> login(String username, String password) async {
     var r =
-    await Requests.post('http://portal.demo.ipm.capital/mobileApi/login',
-        body: {
-          'username': username,
-          'password': password,
-        },
-        bodyEncoding: RequestBodyEncoding.FormURLEncoded,
-        timeoutSeconds: 20);
+        await Requests.post('http://portal.demo.ipm.capital/mobileApi/login',
+            body: {
+              'username': username,
+              'password': password,
+            },
+            bodyEncoding: RequestBodyEncoding.FormURLEncoded,
+            timeoutSeconds: 20);
     return [r.statusCode, r.json()];
   }
 
@@ -156,8 +158,20 @@ class User {
           double.parse(commodity['totalCharges']),
           double.parse(commodity['totalChargesPercentage'])));
     }
-    json['injectionData'].forEach((k, v) =>
-    (_injections.add(Injection(
+
+    for (dynamic metalCharge in json['chargeData']['metalCharges']){
+      _metalCharges.add(MetalCharge(
+          metalCharge['commodity'],
+          double.parse(metalCharge['costPerDay']),
+          double.parse(metalCharge['chargePercent']),
+          double.parse(metalCharge['weight']),
+          double.parse(metalCharge['value'])));
+    }
+
+
+    print(_metalCharges);
+
+    json['injectionData'].forEach((k, v) => (_injections.add(Injection(
         DateTime.parse(v['initialDate']),
         double.parse(v['currentInvestment']),
         double.parse(v['initialInvestment']),
@@ -165,9 +179,9 @@ class User {
         v['valueChangePercentage'].toDouble(),
         double.parse(v['chargePercentage'])))));
     _lastTotalValue = double.parse(json['historicPerformance']['allTimeData']
-    ['allMetalsData']['data'][json['historicPerformance']['allTimeData']
-    ['allMetalsData']['data']
-        .length -
+        ['allMetalsData']['data'][json['historicPerformance']['allTimeData']
+                ['allMetalsData']['data']
+            .length -
         1]);
     _valueDifference = _totalValue - _lastTotalValue;
     _valueDifferencePercentage = (_valueDifference) / _lastTotalValue * 100;
@@ -202,7 +216,7 @@ class User {
             ))
           ],
           color: MaterialStateColor.resolveWith(
-                (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
+            (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
           ));
       dataRows.add(tempRow);
     }
@@ -227,101 +241,102 @@ class User {
       Injection injection = _injections[i];
       var tempRow = DataRow(
           onSelectChanged: (selected) {
-        {
-          if(selected!){
-            print('Selected injection: ${injection.getInitialDate}');
-          }
-        }
-      },
-          cells: [
-        DataCell(
-            Text(
-          '${injection.getInitialDate.year}-${injection.getInitialDate
-              .month}-${injection.getInitialDate.day}',
-          style: TextStyle(fontSize: 30),
-        )),
-        DataCell(Text(
-          totalFormat.format(
-              injection.getCurrentInvestment * currencyRates[_chosenCurrency]!),
-          style: TextStyle(fontSize: 30),
-        )),
-        DataCell(Text(
-          totalFormat.format(
-              injection.getValueChange * currencyRates[_chosenCurrency]!),
-          style: TextStyle(fontSize: 30),
-        )),
-        DataCell(Text(
-          '${totalFormat.format(injection.getValueChangePercentage)}%',
-          style: TextStyle(fontSize: 30),
-        )),
-        DataCell(Text(
-          totalFormat.format(
-              injection.getInitialInvestment * currencyRates[_chosenCurrency]!),
-          style: TextStyle(fontSize: 30),
-        )),
-      ], color: MaterialStateColor.resolveWith(
-            (states) =>
-        (i % 2 == 0) ? Colors.white : Colors.grey.shade200
-        ,));
-          injectionRows.add(tempRow);
-    }
-    return
-      injectionRows;
-  }
-
-  List<DataRow> getCostChargesRows() {
-    var totalFormat = NumberFormat("###,###.0#", "en_US");
-    List<DataRow> dataRows = [];
-    for (int i = 0; i < _commodities.length; i++) {
-      Commodity commodity = _commodities[i];
-      if (commodity.getValue <= 0) continue;
-      var tempRow = DataRow(
+            {
+              if (selected!) {
+                print('Selected injection: ${injection.getInitialDate}');
+              }
+            }
+          },
           cells: [
             DataCell(Text(
-              commodity.getName.toCapitalized(),
-              style: TextStyle(fontSize: 24),
+              '${injection.getInitialDate.year}-${injection.getInitialDate.month}-${injection.getInitialDate.day}',
+              style: TextStyle(fontSize: 30),
             )),
-            // DataCell(Text(
-            //   totalFormat
-            //       .format(commodity.getValue * currencyRates[_chosenCurrency]!),
-            //   style: TextStyle(fontSize: 24),
-            // )),
-            // DataCell(Text(
-            //   totalFormat
-            //       .format(commodity.getValue * currencyRates[_chosenCurrency]!),
-            //   style: TextStyle(fontSize: 24),
-            // )),
             DataCell(Text(
-              totalFormat
-                  .format(commodity.getWeight * weightRates[_chosenWeight]!),
-              style: TextStyle(fontSize: 24),
+              totalFormat.format(injection.getCurrentInvestment *
+                  currencyRates[_chosenCurrency]!),
+              style: TextStyle(fontSize: 30),
             )),
             DataCell(Text(
               totalFormat.format(
-                  commodity.getLatestPrice * currencyRates[_chosenCurrency]!),
-              style: TextStyle(fontSize: 24),
+                  injection.getValueChange * currencyRates[_chosenCurrency]!),
+              style: TextStyle(fontSize: 30),
+            )),
+            DataCell(Text(
+              '${totalFormat.format(injection.getValueChangePercentage)}%',
+              style: TextStyle(fontSize: 30),
+            )),
+            DataCell(Text(
+              totalFormat.format(injection.getInitialInvestment *
+                  currencyRates[_chosenCurrency]!),
+              style: TextStyle(fontSize: 30),
+            )),
+          ],
+          color: MaterialStateColor.resolveWith(
+            (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
+          ));
+      injectionRows.add(tempRow);
+    }
+    return injectionRows;
+  }
+
+  List<DataRow> getCostChargesRows() {
+    double _totalCostPerDay = 0.0;
+    double _totalChargePercent = 0.0;
+    var totalFormat = NumberFormat("###,###.0#", "en_US");
+    List<DataRow> dataRows = [];
+    for (int i = 0; i < _metalCharges.length; i++) {
+      MetalCharge metalCharge  = _metalCharges[i];
+      if (metalCharge.getValue <= 0) continue;
+      _totalCostPerDay += metalCharge.getCostPerDay;
+      _totalChargePercent += metalCharge.getChargePercent;
+      var tempRow = DataRow(
+          cells: [
+            DataCell(Text(
+              metalCharge.getName.toString().toCapitalized(),
+              style: TextStyle(fontSize: 30),
+            )),
+            DataCell(Text(
+              totalFormat
+                  .format(metalCharge.getCostPerDay * currencyRates[_chosenCurrency]!),
+              style: TextStyle(fontSize: 30),
+            )),
+            DataCell(Text(
+              totalFormat
+                  .format(metalCharge.getChargePercent),
+              style: TextStyle(fontSize: 30),
+            )),
+            DataCell(Text(
+              totalFormat
+                  .format(metalCharge.getWeight * weightRates[_chosenWeight]!),
+              style: TextStyle(fontSize: 30),
+            )),
+            DataCell(Text(
+              totalFormat.format(
+                  metalCharge.getValue * currencyRates[_chosenCurrency]!),
+              style: TextStyle(fontSize: 30),
             ))
           ],
           color: MaterialStateColor.resolveWith(
-                (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
+            (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
           ));
       dataRows.add(tempRow);
     }
     dataRows.add(DataRow(cells: [
       DataCell(Text('Total',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
-      // DataCell(Text(
-      //     totalFormat.format(_totalValue * currencyRates[_chosenCurrency]!),
-      //     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
-      // DataCell(Text(
-      //     totalFormat.format(_totalValue * currencyRates[_chosenCurrency]!),
-      //     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold))),
+      DataCell(Text(
+          totalFormat.format(_totalCostPerDay * currencyRates[_chosenCurrency]!),
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold))),
+      DataCell(Text(
+          totalFormat.format(_totalChargePercent),
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold))),
       DataCell(Text(
           totalFormat.format(_totalWeight * weightRates[_chosenWeight]!),
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold))),
       DataCell(Text(
           totalFormat.format(_totalValue * currencyRates[_chosenCurrency]!),
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold))),
     ]));
     return dataRows;
   }
