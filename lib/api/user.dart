@@ -42,7 +42,7 @@ class User {
     _chosenWeight = newWeight;
   }
 
-  get getChosenWeight{
+  get getChosenWeight {
     return _chosenWeight;
   }
 
@@ -113,13 +113,13 @@ class User {
 
   Future<List> login(String username, String password) async {
     var r =
-        await Requests.post('http://portal.demo.ipm.capital/mobileApi/login',
-            body: {
-              'username': username,
-              'password': password,
-            },
-            bodyEncoding: RequestBodyEncoding.FormURLEncoded,
-            timeoutSeconds: 20);
+    await Requests.post('http://portal.demo.ipm.capital/mobileApi/login',
+        body: {
+          'username': username,
+          'password': password,
+        },
+        bodyEncoding: RequestBodyEncoding.FormURLEncoded,
+        timeoutSeconds: 20);
     return [r.statusCode, r.json()];
   }
 
@@ -156,7 +156,8 @@ class User {
           double.parse(commodity['totalCharges']),
           double.parse(commodity['totalChargesPercentage'])));
     }
-    json['injectionData'].forEach((k, v) => (_injections.add(Injection(
+    json['injectionData'].forEach((k, v) =>
+    (_injections.add(Injection(
         DateTime.parse(v['initialDate']),
         double.parse(v['currentInvestment']),
         double.parse(v['initialInvestment']),
@@ -164,9 +165,9 @@ class User {
         v['valueChangePercentage'].toDouble(),
         double.parse(v['chargePercentage'])))));
     _lastTotalValue = double.parse(json['historicPerformance']['allTimeData']
-        ['allMetalsData']['data'][json['historicPerformance']['allTimeData']
-                ['allMetalsData']['data']
-            .length -
+    ['allMetalsData']['data'][json['historicPerformance']['allTimeData']
+    ['allMetalsData']['data']
+        .length -
         1]);
     _valueDifference = _totalValue - _lastTotalValue;
     _valueDifferencePercentage = (_valueDifference) / _lastTotalValue * 100;
@@ -190,7 +191,8 @@ class User {
               style: TextStyle(fontSize: 24),
             )),
             DataCell(Text(
-              totalFormat.format(commodity.getWeight * weightRates[_chosenWeight]!),
+              totalFormat
+                  .format(commodity.getWeight * weightRates[_chosenWeight]!),
               style: TextStyle(fontSize: 24),
             )),
             DataCell(Text(
@@ -200,7 +202,7 @@ class User {
             ))
           ],
           color: MaterialStateColor.resolveWith(
-            (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
+                (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
           ));
       dataRows.add(tempRow);
     }
@@ -210,11 +212,61 @@ class User {
       DataCell(Text(
           totalFormat.format(_totalValue * currencyRates[_chosenCurrency]!),
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
-      DataCell(Text(totalFormat.format(_totalWeight * weightRates[_chosenWeight]!),
+      DataCell(Text(
+          totalFormat.format(_totalWeight * weightRates[_chosenWeight]!),
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
       DataCell(Text(''))
     ]));
     return dataRows;
+  }
+
+  List<DataRow> getInjectionRows() {
+    var totalFormat = NumberFormat("###,###.0#", "en_US");
+    List<DataRow> injectionRows = [];
+    for (int i = 0; i < _injections.length; i++) {
+      Injection injection = _injections[i];
+      var tempRow = DataRow(
+          onSelectChanged: (selected) {
+        {
+          if(selected!){
+            print('Selected injection: ${injection.getInitialDate}');
+          }
+        }
+      },
+          cells: [
+        DataCell(
+            Text(
+          '${injection.getInitialDate.year}-${injection.getInitialDate
+              .month}-${injection.getInitialDate.day}',
+          style: TextStyle(fontSize: 30),
+        )),
+        DataCell(Text(
+          totalFormat.format(
+              injection.getCurrentInvestment * currencyRates[_chosenCurrency]!),
+          style: TextStyle(fontSize: 30),
+        )),
+        DataCell(Text(
+          totalFormat.format(
+              injection.getValueChange * currencyRates[_chosenCurrency]!),
+          style: TextStyle(fontSize: 30),
+        )),
+        DataCell(Text(
+          '${totalFormat.format(injection.getValueChangePercentage)}%',
+          style: TextStyle(fontSize: 30),
+        )),
+        DataCell(Text(
+          totalFormat.format(
+              injection.getInitialInvestment * currencyRates[_chosenCurrency]!),
+          style: TextStyle(fontSize: 30),
+        )),
+      ], color: MaterialStateColor.resolveWith(
+            (states) =>
+        (i % 2 == 0) ? Colors.white : Colors.grey.shade200
+        ,));
+          injectionRows.add(tempRow);
+    }
+    return
+      injectionRows;
   }
 
   Future<void> getRates() async {
