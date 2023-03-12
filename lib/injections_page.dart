@@ -93,7 +93,7 @@ class _InjectionsPageState extends State<InjectionsPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 14),
                   child: FittedBox(
                     child: SizedBox(
-                      height: 450,
+                      height: 800,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: Container(
@@ -105,6 +105,9 @@ class _InjectionsPageState extends State<InjectionsPage> {
                             ),
                           ),
                           child: DataTable(
+                            headingRowHeight: 100,
+                            dataRowHeight: 100,
+                            showCheckboxColumn: false,
                             headingRowColor:
                             MaterialStateColor.resolveWith(
                                   (states) => backgroundColorIndigo,
@@ -115,7 +118,7 @@ class _InjectionsPageState extends State<InjectionsPage> {
                                 label: Text(
                                   'Initial Invest\nDate',
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 30,
                                     fontWeight: FontWeight.bold,
                                     color: textColorGold,
                                   ),
@@ -125,7 +128,7 @@ class _InjectionsPageState extends State<InjectionsPage> {
                                 label: Text(
                                   'Current\n${user.getChosenCurrency} Value',
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 30,
                                     fontWeight: FontWeight.bold,
                                     color: textColorGold,
                                   ),
@@ -135,7 +138,7 @@ class _InjectionsPageState extends State<InjectionsPage> {
                                 label: Text(
                                   '${user.getChosenCurrency} Value\nChange',
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 30,
                                     fontWeight: FontWeight.bold,
                                     color: textColorGold,
                                   ),
@@ -145,7 +148,7 @@ class _InjectionsPageState extends State<InjectionsPage> {
                                 label: Text(
                                   'Value Change\nPercentage',
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 30,
                                     fontWeight: FontWeight.bold,
                                     color: textColorGold,
                                   ),
@@ -155,14 +158,14 @@ class _InjectionsPageState extends State<InjectionsPage> {
                                 label: Text(
                                   'Initial ${user.getChosenCurrency}\nPaper Valuation',
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 30,
                                     fontWeight: FontWeight.bold,
                                     color: textColorGold,
                                   ),
                                 ),
                               ),
                             ],
-                            rows: [],
+                            rows: user.getInjectionRows(),
                           ),
                         ),
                       ),
