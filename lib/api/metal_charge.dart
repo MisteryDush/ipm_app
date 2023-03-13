@@ -8,7 +8,7 @@ class MetalCharge {
 
   MetalCharge(this._name, this._costPerDay, this._chargePercent, this._weight, this._value);
 
-  get getName{
+  String get getName{
     return _name;
   }
 

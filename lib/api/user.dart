@@ -293,7 +293,7 @@ class User {
       var tempRow = DataRow(
           cells: [
             DataCell(Text(
-              metalCharge.getName.toString().toCapitalized(),
+              metalCharge.getName.toCapitalized(),
               style: TextStyle(fontSize: 30),
             )),
             DataCell(Text(
