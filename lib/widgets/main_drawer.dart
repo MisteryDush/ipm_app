@@ -27,6 +27,8 @@ class MainDrawer extends StatelessWidget{
                   onTap: () {
                     if(ModalRoute.of(context)?.settings.name != '/menu') {
                       Navigator.popAndPushNamed(context, '/menu');
+                    } else {
+                      Navigator.pop(context);
                     }
                   },
                 ),
@@ -43,6 +45,8 @@ class MainDrawer extends StatelessWidget{
                   onTap: () {
                     if(ModalRoute.of(context)?.settings.name != '/injections_page') {
                       Navigator.popAndPushNamed(context, '/injections_page');
+                    } else {
+                      Navigator.pop(context);
                     }
                   },
                 ),
@@ -59,6 +63,8 @@ class MainDrawer extends StatelessWidget{
                   onTap: () {
                     if(ModalRoute.of(context)?.settings.name != '/cost_charges_page') {
                       Navigator.popAndPushNamed(context, '/cost_charges_page');
+                    } else {
+                      Navigator.pop(context);
                     }
                   },
                 ),
@@ -75,6 +81,8 @@ class MainDrawer extends StatelessWidget{
                   onTap: () {
                     if(ModalRoute.of(context)?.settings.name != '/historical_vault_page') {
                       Navigator.popAndPushNamed(context, '/historical_vault_page');
+                    } else {
+                      Navigator.pop(context);
                     }
                   },
                 ),
@@ -91,6 +99,8 @@ class MainDrawer extends StatelessWidget{
                   onTap: () {
                     if(ModalRoute.of(context)?.settings.name != '/reports_page') {
                       Navigator.popAndPushNamed(context, '/reports_page');
+                    } else {
+                      Navigator.pop(context);
                     }
                   },
                 ),
@@ -110,6 +120,8 @@ class MainDrawer extends StatelessWidget{
             onTap: () {
               if(ModalRoute.of(context)?.settings.name != '/settings') {
                 Navigator.popAndPushNamed(context, '/settings');
+              } else {
+                Navigator.pop(context);
               }
             },
           ),
