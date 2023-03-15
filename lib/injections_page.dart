@@ -165,7 +165,7 @@ class _InjectionsPageState extends State<InjectionsPage> {
                                 ),
                               ),
                             ],
-                            rows: user.getInjectionRows(),
+                            rows: user.getInjectionRows(context),
                           ),
                         ),
                       ),
