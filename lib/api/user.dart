@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:ipm_app/api/commodity.dart';
 import 'package:ipm_app/api/injection.dart';
 import 'package:ipm_app/api/metal_charge.dart';
+import 'package:ipm_app/api/sub_injection.dart';
+import 'package:ipm_app/single_injection_page.dart';
 import 'package:requests/requests.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -115,13 +117,13 @@ class User {
 
   Future<List> login(String username, String password) async {
     var r =
-        await Requests.post('http://portal.demo.ipm.capital/mobileApi/login',
-            body: {
-              'username': username,
-              'password': password,
-            },
-            bodyEncoding: RequestBodyEncoding.FormURLEncoded,
-            timeoutSeconds: 20);
+    await Requests.post('http://portal.demo.ipm.capital/mobileApi/login',
+        body: {
+          'username': username,
+          'password': password,
+        },
+        bodyEncoding: RequestBodyEncoding.FormURLEncoded,
+        timeoutSeconds: 20);
     return [r.statusCode, r.json()];
   }
 
@@ -159,7 +161,7 @@ class User {
           double.parse(commodity['totalChargesPercentage'])));
     }
 
-    for (dynamic metalCharge in json['chargeData']['metalCharges']){
+    for (dynamic metalCharge in json['chargeData']['metalCharges']) {
       _metalCharges.add(MetalCharge(
           metalCharge['commodity'],
           double.parse(metalCharge['costPerDay']),
@@ -168,10 +170,8 @@ class User {
           double.parse(metalCharge['value'])));
     }
 
-
-    print(_metalCharges);
-
-    json['injectionData'].forEach((k, v) => (_injections.add(Injection(
+    json['injectionData'].forEach((k, v) =>
+    (_injections.add(Injection(
         DateTime.parse(v['initialDate']),
         double.parse(v['currentInvestment']),
         double.parse(v['initialInvestment']),
@@ -179,12 +179,32 @@ class User {
         v['valueChangePercentage'].toDouble(),
         double.parse(v['chargePercentage'])))));
     _lastTotalValue = double.parse(json['historicPerformance']['allTimeData']
-        ['allMetalsData']['data'][json['historicPerformance']['allTimeData']
-                ['allMetalsData']['data']
-            .length -
+    ['allMetalsData']['data'][json['historicPerformance']['allTimeData']
+    ['allMetalsData']['data']
+        .length -
         1]);
     _valueDifference = _totalValue - _lastTotalValue;
     _valueDifferencePercentage = (_valueDifference) / _lastTotalValue * 100;
+
+    r = await Requests.get(
+        'https://portal.demo.ipm.capital/mobileApi/data/getUserInjection',
+        headers: {'Authorization': 'Bearer $getToken'},
+        bodyEncoding: RequestBodyEncoding.FormURLEncoded,
+        timeoutSeconds: 20);
+
+    var injectionJson = r.json();
+
+    for (dynamic currentHolding in injectionJson['currentHoldings']['holdings']) {
+      String date = currentHolding['investmentDate'].substring(0, 10);
+      var sub = SubInjection(currentHolding['commodity'],
+          double.parse(currentHolding['currentInvestment']),
+          double.parse(currentHolding['initialInvestment']),
+          double.parse(currentHolding['weight']),
+          double.parse(currentHolding['valueChange']),
+          double.parse(currentHolding['valueChangePercentage']));
+      Injection inj = _injections.firstWhere((element) => date == element.getDate('yyyy-MM-dd'));
+      inj.subInjections.add(sub);
+    }
   }
 
   List<DataRow> getCommoditiesRows() {
@@ -216,7 +236,7 @@ class User {
             ))
           ],
           color: MaterialStateColor.resolveWith(
-            (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
+                (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
           ));
       dataRows.add(tempRow);
     }
@@ -234,7 +254,7 @@ class User {
     return dataRows;
   }
 
-  List<DataRow> getInjectionRows() {
+  List<DataRow> getInjectionRows(BuildContext context) {
     var totalFormat = NumberFormat("###,###.0#", "en_US");
     List<DataRow> injectionRows = [];
     for (int i = 0; i < _injections.length; i++) {
@@ -243,13 +263,14 @@ class User {
           onSelectChanged: (selected) {
             {
               if (selected!) {
-                print('Selected injection: ${injection.getInitialDate}');
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SingleInjectionPage(injection: injection,)));
               }
             }
           },
           cells: [
             DataCell(Text(
-              '${injection.getInitialDate.year}-${injection.getInitialDate.month}-${injection.getInitialDate.day}',
+              '${injection.getInitialDate.year}-${injection.getInitialDate
+                  .month}-${injection.getInitialDate.day}',
               style: TextStyle(fontSize: 30),
             )),
             DataCell(Text(
@@ -273,7 +294,7 @@ class User {
             )),
           ],
           color: MaterialStateColor.resolveWith(
-            (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
+                (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
           ));
       injectionRows.add(tempRow);
     }
@@ -286,7 +307,7 @@ class User {
     var totalFormat = NumberFormat("###,##0.0#", "en_US");
     List<DataRow> dataRows = [];
     for (int i = 0; i < _metalCharges.length; i++) {
-      MetalCharge metalCharge  = _metalCharges[i];
+      MetalCharge metalCharge = _metalCharges[i];
       if (metalCharge.getValue <= 0) continue;
       _totalCostPerDay += metalCharge.getCostPerDay;
       _totalChargePercent += metalCharge.getChargePercent;
@@ -297,13 +318,12 @@ class User {
               style: TextStyle(fontSize: 30),
             )),
             DataCell(Text(
-              totalFormat
-                  .format(metalCharge.getCostPerDay * currencyRates[_chosenCurrency]!),
+              totalFormat.format(
+                  metalCharge.getCostPerDay * currencyRates[_chosenCurrency]!),
               style: TextStyle(fontSize: 30),
             )),
             DataCell(Text(
-              '${totalFormat
-                  .format(metalCharge.getChargePercent)}%',
+              '${totalFormat.format(metalCharge.getChargePercent)}%',
               style: TextStyle(fontSize: 30),
             )),
             DataCell(Text(
@@ -318,7 +338,7 @@ class User {
             ))
           ],
           color: MaterialStateColor.resolveWith(
-            (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
+                (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
           ));
       dataRows.add(tempRow);
     }
@@ -326,10 +346,10 @@ class User {
       DataCell(Text('Total',
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold))),
       DataCell(Text(
-          totalFormat.format(_totalCostPerDay * currencyRates[_chosenCurrency]!),
+          totalFormat
+              .format(_totalCostPerDay * currencyRates[_chosenCurrency]!),
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold))),
-      DataCell(Text(
-          '${totalFormat.format(_totalChargePercent)}%',
+      DataCell(Text('${totalFormat.format(_totalChargePercent)}%',
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold))),
       DataCell(Text(
           totalFormat.format(_totalWeight * weightRates[_chosenWeight]!),
