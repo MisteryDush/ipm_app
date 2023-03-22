@@ -12,6 +12,14 @@ class SingleInjectionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var height = 0.0;
+
+    if (MediaQuery.of(context).orientation == Orientation.landscape) {
+      height = MediaQuery.of(context).size.width + 130;
+    } else {
+      height = MediaQuery.of(context).size.height - 130;
+    }
+
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 100,
@@ -23,10 +31,10 @@ class SingleInjectionPage extends StatelessWidget {
             icon: const Icon(Icons.arrow_left_sharp),
             label: const Text('Back')),
       ),
-      body: Padding(
+      body: SingleChildScrollView(child: Padding(
         padding: EdgeInsets.zero,
         child: SizedBox(
-          height: 1000,
+          height: height,
           child: Column(
             children: [
               Padding(
@@ -149,7 +157,7 @@ class SingleInjectionPage extends StatelessWidget {
             ],
           ),
         ),
-      ),
+      )),
     );
   }
 }
