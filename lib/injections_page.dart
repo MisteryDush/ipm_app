@@ -16,16 +16,6 @@ class _InjectionsPageState extends State<InjectionsPage> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
 
   Widget build(BuildContext context) {
-    var height = 0.0;
-
-    if(MediaQuery.of(context).orientation == Orientation.landscape){
-      height = MediaQuery.of(context).size.width + 130;
-    }
-    else{
-      height = MediaQuery.of(context).size.height - 130;
-    }
-
-
     return Scaffold(
       appBar: MainAppBar(_scaffoldKey),
       body: Scaffold(
@@ -36,7 +26,6 @@ class _InjectionsPageState extends State<InjectionsPage> {
                 child: Padding(
           padding: EdgeInsets.zero,
           child: SizedBox(
-            height: height,
             child: Column(
               children: [
                 Padding(
@@ -106,8 +95,6 @@ class _InjectionsPageState extends State<InjectionsPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 14),
                   child: FittedBox(
-                    child: SizedBox(
-                      height: 800,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: Container(
@@ -182,7 +169,6 @@ class _InjectionsPageState extends State<InjectionsPage> {
                           ),
                         ),
                       ),
-                    ),
                   ),
                 )
               ],
