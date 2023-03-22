@@ -5,7 +5,6 @@ import 'package:ipm_app/widgets/main_drawer.dart';
 import 'api/user.dart';
 import 'login.dart';
 
-
 class CostChargesPage extends StatefulWidget {
   @override
   _CostChargesPageState createState() => _CostChargesPageState();
@@ -17,18 +16,29 @@ class _CostChargesPageState extends State<CostChargesPage> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
 
   Widget build(BuildContext context) {
+
+    var height = 0.0;
+
+    if (MediaQuery.of(context).orientation == Orientation.landscape) {
+      height = MediaQuery.of(context).size.width + 130;
+    } else {
+      height = MediaQuery.of(context).size.height - 130;
+    }
     return Scaffold(
       appBar: MainAppBar(_scaffoldKey),
       body: Scaffold(
         key: _scaffoldKey,
         drawer: MainDrawer(),
-        body: Padding(
+        body: SizedBox(
+            child: SingleChildScrollView(
+                child: Padding(
           padding: EdgeInsets.zero,
           child: SizedBox(
-            height: 1000,
+            height: height,
             child: Column(
               children: [
-                Padding(padding: EdgeInsets.symmetric(vertical: 25),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 25),
                   child: Text(
                     'Vault/MGT % Cost Charges',
                     textAlign: TextAlign.center,
@@ -42,9 +52,11 @@ class _CostChargesPageState extends State<CostChargesPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 30),
-                      child: Image.asset('assets/images/logo_divide.png',
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 30),
+                      child: Image.asset(
+                        'assets/images/logo_divide.png',
                         width: 320,
                         fit: BoxFit.fill,
                       ),
@@ -54,7 +66,8 @@ class _CostChargesPageState extends State<CostChargesPage> {
                 Padding(
                   padding: EdgeInsets.zero,
                   child: Column(children: [
-                    Text('As of (Todays date)',
+                    Text(
+                      'As of (Todays date)',
                       style: TextStyle(
                         fontSize: 18,
                       ),
@@ -65,11 +78,11 @@ class _CostChargesPageState extends State<CostChargesPage> {
                         fontSize: 16,
                       ),
                     ),
-                  ]
-                  ),
+                  ]),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 20),
                   child: FittedBox(
                     child: SizedBox(
                       height: 700,
@@ -86,9 +99,8 @@ class _CostChargesPageState extends State<CostChargesPage> {
                           child: DataTable(
                             headingRowHeight: 100,
                             dataRowHeight: 100,
-                            headingRowColor:
-                            MaterialStateColor.resolveWith(
-                                  (states) => backgroundColorIndigo,
+                            headingRowColor: MaterialStateColor.resolveWith(
+                              (states) => backgroundColorIndigo,
                             ),
                             dividerThickness: 2,
                             columns: [
@@ -153,7 +165,7 @@ class _CostChargesPageState extends State<CostChargesPage> {
               ],
             ),
           ),
-        ),
+        ))),
       ),
     );
   }

@@ -5,7 +5,6 @@ import 'package:ipm_app/widgets/main_drawer.dart';
 import 'api/user.dart';
 import 'login.dart';
 
-
 class InjectionsPage extends StatefulWidget {
   @override
   _InjectionsPageState createState() => _InjectionsPageState();
@@ -17,18 +16,31 @@ class _InjectionsPageState extends State<InjectionsPage> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
 
   Widget build(BuildContext context) {
+    var height = 0.0;
+
+    if(MediaQuery.of(context).orientation == Orientation.landscape){
+      height = MediaQuery.of(context).size.width + 130;
+    }
+    else{
+      height = MediaQuery.of(context).size.height - 130;
+    }
+
+
     return Scaffold(
       appBar: MainAppBar(_scaffoldKey),
       body: Scaffold(
         key: _scaffoldKey,
         drawer: MainDrawer(),
-        body: Padding(
+        body: SizedBox(
+            child: SingleChildScrollView(
+                child: Padding(
           padding: EdgeInsets.zero,
           child: SizedBox(
-            height: 1000,
+            height: height,
             child: Column(
               children: [
-                Padding(padding: EdgeInsets.symmetric(vertical: 25),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 25),
                   child: Text(
                     'Injections',
                     textAlign: TextAlign.center,
@@ -42,9 +54,11 @@ class _InjectionsPageState extends State<InjectionsPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 30),
-                      child: Image.asset('assets/images/logo_divide.png',
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 30),
+                      child: Image.asset(
+                        'assets/images/logo_divide.png',
                         width: 320,
                         fit: BoxFit.fill,
                       ),
@@ -52,7 +66,8 @@ class _InjectionsPageState extends State<InjectionsPage> {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   child: Column(
                     children: [
                       RichText(
@@ -65,23 +80,22 @@ class _InjectionsPageState extends State<InjectionsPage> {
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             TextSpan(
-                              text: 'Valuation costs are based purely on '
-                            ),
+                                text: 'Valuation costs are based purely on '),
                             TextSpan(
                               text: '${user.getChosenCurrency} paper prices',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             TextSpan(
-                              text:
-                              ' and may not accurately value your physical metals, '
-                                  'as premiums on physical products can vary.\n'
-                            ),
+                                text:
+                                    ' and may not accurately value your physical metals, '
+                                    'as premiums on physical products can vary.\n'),
                             TextSpan(
                               text: 'Note: ',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             TextSpan(
-                              text: 'Valuations are presently updated on an hourly basis.',
+                              text:
+                                  'Valuations are presently updated on an hourly basis.',
                             ),
                           ],
                         ),
@@ -108,9 +122,8 @@ class _InjectionsPageState extends State<InjectionsPage> {
                             headingRowHeight: 100,
                             dataRowHeight: 100,
                             showCheckboxColumn: false,
-                            headingRowColor:
-                            MaterialStateColor.resolveWith(
-                                  (states) => backgroundColorIndigo,
+                            headingRowColor: MaterialStateColor.resolveWith(
+                              (states) => backgroundColorIndigo,
                             ),
                             dividerThickness: 2,
                             columns: [
@@ -175,7 +188,7 @@ class _InjectionsPageState extends State<InjectionsPage> {
               ],
             ),
           ),
-        ),
+        ))),
       ),
     );
   }
