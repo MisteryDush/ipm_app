@@ -16,7 +16,6 @@ class _CostChargesPageState extends State<CostChargesPage> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
 
   Widget build(BuildContext context) {
-
     var height = 0.0;
 
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
