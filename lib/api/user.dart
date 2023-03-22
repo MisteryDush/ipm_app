@@ -256,6 +256,7 @@ class User {
 
   List<DataRow> getInjectionRows(BuildContext context) {
     var totalFormat = NumberFormat("###,###.0#", "en_US");
+    var dateFormat = DateFormat('yyyy-MM-dd');
     List<DataRow> injectionRows = [];
     for (int i = 0; i < _injections.length; i++) {
       Injection injection = _injections[i];
@@ -269,8 +270,7 @@ class User {
           },
           cells: [
             DataCell(Text(
-              '${injection.getInitialDate.year}-${injection.getInitialDate
-                  .month}-${injection.getInitialDate.day}',
+              dateFormat.format(injection.getInitialDate),
               style: TextStyle(fontSize: 30),
             )),
             DataCell(Text(
