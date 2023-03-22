@@ -9,6 +9,8 @@ import 'package:ipm_app/single_injection_page.dart';
 import 'package:requests/requests.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'metal_historic_performance.dart';
+
 class User {
   String _token = '';
   String _name = '';
@@ -20,6 +22,9 @@ class User {
   final _commodities = [];
   final _injections = [];
   final _metalCharges = [];
+
+  List<MetalHistoricPerformance> _metals = [];
+
   final Map<String, double> weightRates = {
     'Toz': 1.0,
     'Kilo': 0.0311034768,
@@ -42,12 +47,20 @@ class User {
     return _chosenCurrency;
   }
 
+  get getChartData => null;
+
+  MetalHistoricPerformance get getSpotPrices => _metals[0];
+
   set setChosenWeight(String newWeight) {
     _chosenWeight = newWeight;
   }
 
   get getChosenWeight {
     return _chosenWeight;
+  }
+
+  get allHist {
+    return _metals[1];
   }
 
   set setChosenCurrency(String newCurrency) {
@@ -117,13 +130,13 @@ class User {
 
   Future<List> login(String username, String password) async {
     var r =
-    await Requests.post('http://portal.demo.ipm.capital/mobileApi/login',
-        body: {
-          'username': username,
-          'password': password,
-        },
-        bodyEncoding: RequestBodyEncoding.FormURLEncoded,
-        timeoutSeconds: 20);
+        await Requests.post('http://portal.demo.ipm.capital/mobileApi/login',
+            body: {
+              'username': username,
+              'password': password,
+            },
+            bodyEncoding: RequestBodyEncoding.FormURLEncoded,
+            timeoutSeconds: 20);
     return [r.statusCode, r.json()];
   }
 
@@ -170,8 +183,7 @@ class User {
           double.parse(metalCharge['value'])));
     }
 
-    json['injectionData'].forEach((k, v) =>
-    (_injections.add(Injection(
+    json['injectionData'].forEach((k, v) => (_injections.add(Injection(
         DateTime.parse(v['initialDate']),
         double.parse(v['currentInvestment']),
         double.parse(v['initialInvestment']),
@@ -179,9 +191,9 @@ class User {
         v['valueChangePercentage'].toDouble(),
         double.parse(v['chargePercentage'])))));
     _lastTotalValue = double.parse(json['historicPerformance']['allTimeData']
-    ['allMetalsData']['data'][json['historicPerformance']['allTimeData']
-    ['allMetalsData']['data']
-        .length -
+        ['allMetalsData']['data'][json['historicPerformance']['allTimeData']
+                ['allMetalsData']['data']
+            .length -
         1]);
     _valueDifference = _totalValue - _lastTotalValue;
     _valueDifferencePercentage = (_valueDifference) / _lastTotalValue * 100;
@@ -194,17 +206,39 @@ class User {
 
     var injectionJson = r.json();
 
-    for (dynamic currentHolding in injectionJson['currentHoldings']['holdings']) {
+    for (dynamic currentHolding in injectionJson['currentHoldings']
+        ['holdings']) {
       String date = currentHolding['investmentDate'].substring(0, 10);
-      var sub = SubInjection(currentHolding['commodity'],
+      var sub = SubInjection(
+          currentHolding['commodity'],
           double.parse(currentHolding['currentInvestment']),
           double.parse(currentHolding['initialInvestment']),
           double.parse(currentHolding['weight']),
           double.parse(currentHolding['valueChange']),
           double.parse(currentHolding['valueChangePercentage']));
-      Injection inj = _injections.firstWhere((element) => date == element.getDate('yyyy-MM-dd'));
+      Injection inj = _injections
+          .firstWhere((element) => date == element.getDate('yyyy-MM-dd'));
       inj.subInjections.add(sub);
     }
+
+    _metals.add(MetalHistoricPerformance(
+        'Spot Price',
+        injectionJson['historicPerformance']['allData']['allTime']
+            ['allMetalsSpotPrice']['data'],
+        injectionJson['historicPerformance']['allData']['allTime']
+            ['allMetalsSpotPrice']['labels']));
+
+    _metals.add(MetalHistoricPerformance(
+        'All Metals',
+        injectionJson['historicPerformance']['allData']['allTime']
+            ['allMetalsData']['data'],
+        injectionJson['historicPerformance']['allData']['allTime']
+            ['allMetalsData']['labels']));
+    injectionJson['historicPerformance']['allData']['allTime']['metalsData']
+        .forEach((k, v) =>
+            (_metals.add(MetalHistoricPerformance(k, v['data'], v['labels']))));
+
+    print(_metals);
   }
 
   List<DataRow> getCommoditiesRows() {
@@ -236,7 +270,7 @@ class User {
             ))
           ],
           color: MaterialStateColor.resolveWith(
-                (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
+            (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
           ));
       dataRows.add(tempRow);
     }
@@ -264,7 +298,10 @@ class User {
           onSelectChanged: (selected) {
             {
               if (selected!) {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SingleInjectionPage(injection: injection,)));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SingleInjectionPage(
+                          injection: injection,
+                        )));
               }
             }
           },
@@ -294,7 +331,7 @@ class User {
             )),
           ],
           color: MaterialStateColor.resolveWith(
-                (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
+            (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
           ));
       injectionRows.add(tempRow);
     }
@@ -338,7 +375,7 @@ class User {
             ))
           ],
           color: MaterialStateColor.resolveWith(
-                (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
+            (states) => (i % 2 == 0) ? Colors.white : Colors.grey.shade200,
           ));
       dataRows.add(tempRow);
     }
