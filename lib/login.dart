@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ipm_app/settings.dart';
@@ -121,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   onPressed: () async {
                     if (nameController.text.isEmpty |
-                        passwordController.text.isEmpty) {
+                    passwordController.text.isEmpty) {
                       showDialog(
                           barrierDismissible: true,
                           context: context,
@@ -131,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                               backgroundColor: backgroundColorIndigo,
                               child: Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 40),
+                                const EdgeInsets.symmetric(vertical: 40),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: const [
@@ -158,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                               backgroundColor: backgroundColorIndigo,
                               child: Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 20),
+                                const EdgeInsets.symmetric(vertical: 20),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: const [
@@ -193,7 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                                 backgroundColor: backgroundColorIndigo,
                                 child: Padding(
                                   padding:
-                                      const EdgeInsets.symmetric(vertical: 20),
+                                  const EdgeInsets.symmetric(vertical: 20),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: const [
@@ -209,7 +211,35 @@ class _LoginPageState extends State<LoginPage> {
                               );
                             });
                         isSuccess = false;
-                      } finally {
+                      } on TimeoutException {
+                        Navigator.of(context).pop();
+                        showDialog(
+                            barrierDismissible: true,
+                            context: context,
+                            builder: (_)
+                        {
+                          return Dialog(
+                            // The background color
+                            backgroundColor: backgroundColorIndigo,
+                            child: Padding(
+                              padding:
+                              const EdgeInsets.symmetric(vertical: 20),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  // Some text
+                                  Text(
+                                    'Connection problems. Please, try again.',
+                                    style: TextStyle(
+                                        color: textColorGold, fontSize: 14),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        });
+                      }
+                      finally {
                         if (isSuccess) {
                           Navigator.of(context).pop();
                           Navigator.popAndPushNamed(context, '/menu');
