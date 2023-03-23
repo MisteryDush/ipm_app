@@ -1,3 +1,5 @@
+import 'package:ipm_app/api/user.dart';
+
 class MetalHistoricPerformance{
   var _labels = [];
   String _name = '';
@@ -20,7 +22,12 @@ class MetalHistoricPerformance{
     return _data;
   }
 
-  get getChartData => _chartData;
+  List<ChartData> get getChartData => _chartData;
+
+  @override
+  String toString(){
+    return _name.toCapitalized();
+  }
 
 
 
