@@ -67,6 +67,15 @@ class User {
     _chosenCurrency = newCurrency;
   }
 
+  List<DropdownMenuItem<MetalHistoricPerformance>> get getDropdownAllMetals {
+    List<DropdownMenuItem<MetalHistoricPerformance>> menuItems = [];
+    for (MetalHistoricPerformance metal in _metals.sublist(1)) {
+      menuItems.add(DropdownMenuItem(child: Text(metal.toString()), value: metal,));
+    }
+
+    return menuItems;
+  }
+
   double get getLastTotalValue {
     return _lastTotalValue;
   }
