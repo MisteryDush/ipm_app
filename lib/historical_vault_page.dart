@@ -14,11 +14,16 @@ class HistoricalVaultPage extends StatefulWidget {
 
 class _HistoricalVaultPageState extends State<HistoricalVaultPage> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
-
   User user = User.instance;
 
+  MetalHistoricPerformance? dropdownValue;
+  String? dropdownTime;
+  int? firstIndex;
+
   Widget build(BuildContext context) {
-    MetalHistoricPerformance metal = user.allHist;
+    dropdownTime ??= 'Since Inception';
+    dropdownValue ??= user.allHist;
+    firstIndex ??= 0;
     MetalHistoricPerformance spotPrices = user.getSpotPrices;
     var height = 0.0;
 
@@ -78,6 +83,69 @@ class _HistoricalVaultPageState extends State<HistoricalVaultPage> {
                     ),
                   ),
                 ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 25),
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                            width: 120,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.black),
+                            ),
+                            child: Padding(
+                                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                child: DropdownButton<MetalHistoricPerformance>(
+                                  value: dropdownValue,
+                                  items: user.getDropdownAllMetals,
+                                  onChanged:
+                                      (MetalHistoricPerformance? newValue) {
+                                    setState(() {
+                                      dropdownValue = newValue!;
+                                      if (dropdownTime == 'Last 12 Months'){
+                                        firstIndex = dropdownValue!.getChartData.length - 365;
+                                      }
+                                    });
+                                  },
+                                  underline: SizedBox(),
+                                ))),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.black),
+                            ),
+                            child: Padding(
+                                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                child: DropdownButton<String>(
+                                  value: dropdownTime,
+                                  items: <String>[
+                                    'Since Inception',
+                                    'Last 12 Months'
+                                  ].map<DropdownMenuItem<String>>((String value) {
+                                    return DropdownMenuItem<String>(child: Text(value), value: value,);
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      dropdownTime = newValue!;
+                                      if(dropdownTime == 'Since Inception'){
+                                        firstIndex = 0;
+                                      }
+                                      else{
+                                        firstIndex = dropdownValue!.getChartData.length - 365;
+                                      }
+                                      print(dropdownValue);
+                                    });
+                                  },
+                                  underline: SizedBox(),
+                                )))
+                      ]),
+                ),
                 SfCartesianChart(
                   primaryXAxis: CategoryAxis(),
                   axes: [CategoryAxis(name: 'yAxis', opposedPosition: true)],
@@ -88,21 +156,22 @@ class _HistoricalVaultPageState extends State<HistoricalVaultPage> {
                   series: <ChartSeries>[
                     LineSeries<ChartData, String>(
                         name:
-                            '${metal.getName.toCapitalized()} Vault Stock Valuation',
-                        dataSource: metal.getChartData,
+                            '${dropdownValue!.getName.toCapitalized()} Vault Stock Valuation',
+                        dataSource: dropdownValue!.getChartData.sublist(firstIndex!),
                         xValueMapper: (ChartData data, _) => data.label,
                         yValueMapper: (ChartData data, _) => (data.data *
                             user.currencyRates[user.getChosenCurrency]!)),
-                    LineSeries<ChartData, String>(
-                        name:
-                            '${spotPrices.getName.toCapitalized()} Vault Stock Valuation (Right-Hand axis)',
-                        dashArray: <double>[10,10],
-                        dataSource: spotPrices.getChartData,
-                        xValueMapper: (ChartData data, _) => data.label,
-                        yValueMapper: (ChartData data, _) =>
-                            data.data *
-                            user.currencyRates[user.getChosenCurrency]!,
-                        yAxisName: 'yAxis')
+                    // LineSeries<ChartData, String>(
+                    //     name:
+                    //     '${spotPrices.getName
+                    //         .toCapitalized()} Vault Stock Valuation (Right-Hand axis)',
+                    //     dashArray: <double>[10, 10],
+                    //     dataSource: spotPrices.getChartData,
+                    //     xValueMapper: (ChartData data, _) => data.label,
+                    //     yValueMapper: (ChartData data, _) =>
+                    //     data.data *
+                    //         user.currencyRates[user.getChosenCurrency]!,
+                    //     yAxisName: 'yAxis')
                   ],
                 )
               ],
