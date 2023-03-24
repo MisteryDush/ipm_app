@@ -54,7 +54,7 @@ class SingleInjectionPage extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 30),
+                        horizontal: 20, vertical: 10),
                     child: Image.asset(
                       'assets/images/logo_divide.png',
                       width: 320,
@@ -64,7 +64,7 @@ class SingleInjectionPage extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 25),
                 child: FittedBox(
                   child: SizedBox(
                     height: 1200,
