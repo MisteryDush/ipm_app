@@ -16,6 +16,7 @@ class _HistoricalVaultPageState extends State<HistoricalVaultPage> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   User user = User.instance;
 
+  double dividerGap = 0.0;
   late TooltipBehavior _tooltipBehavior;
   late ZoomPanBehavior _zoomPanBehavior;
 
@@ -43,8 +44,10 @@ class _HistoricalVaultPageState extends State<HistoricalVaultPage> {
     final List<double> stops = [0.0];
 
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
+      dividerGap = 10;
       height = MediaQuery.of(context).size.width + 130;
     } else {
+      dividerGap = 30;
       height = MediaQuery.of(context).size.height - 130;
     }
 
@@ -77,8 +80,8 @@ class _HistoricalVaultPageState extends State<HistoricalVaultPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 30),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20, vertical: dividerGap),
                       child: Image.asset(
                         'assets/images/logo_divide.png',
                         width: 320,
