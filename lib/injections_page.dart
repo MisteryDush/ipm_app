@@ -15,7 +15,15 @@ class _InjectionsPageState extends State<InjectionsPage> {
 
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
 
+  var dividerGap = 0.0;
+
   Widget build(BuildContext context) {
+    if (MediaQuery.of(context).orientation == Orientation.landscape) {
+      dividerGap = 10;
+    } else {
+      dividerGap = 30;
+    }
+
     return Scaffold(
       appBar: MainAppBar(_scaffoldKey),
       body: Scaffold(
@@ -44,8 +52,8 @@ class _InjectionsPageState extends State<InjectionsPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 30),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20, vertical: dividerGap),
                       child: Image.asset(
                         'assets/images/logo_divide.png',
                         width: 320,
