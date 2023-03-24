@@ -10,9 +10,11 @@ const Color backgroundColorIndigo = Color.fromRGBO(49, 0, 94, 1);
 
 class Menu extends StatelessWidget {
   User user = User.instance;
-  var totalFormat = NumberFormat("###,###.0#", "en_US");
-  var percentageFormat = NumberFormat("###.0#", "en_US");
-  var differenceFormat = NumberFormat("###,###.0#", "en_US");
+  var totalFormat = NumberFormat("###,##0.0#", "en_US");
+  var percentageFormat = NumberFormat("##0.0#", "en_US");
+  var differenceFormat = NumberFormat("###,##0.0#", "en_US");
+
+  double dividerGap = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +24,10 @@ class Menu extends StatelessWidget {
 
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
       height = MediaQuery.of(context).size.width + 130;
+      dividerGap = 10;
     } else {
       height = MediaQuery.of(context).size.height - 130;
+      dividerGap = 30;
     }
 
     return Scaffold(
@@ -56,8 +60,8 @@ class Menu extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 30),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: dividerGap),
                                 child: Image.asset(
                                   'assets/images/logo_divide.png',
                                   width: 320,
@@ -66,7 +70,7 @@ class Menu extends StatelessWidget {
                           ],
                         ),
                         Padding(
-                            padding: EdgeInsets.zero,
+                            padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
                             child: Column(children: [
                               Text(
                                 'Value:',
