@@ -15,13 +15,17 @@ class _CostChargesPageState extends State<CostChargesPage> {
 
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
 
+  double dividerGap = 0.0;
+
   Widget build(BuildContext context) {
     var height = 0.0;
 
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
       height = MediaQuery.of(context).size.width + 130;
+      dividerGap = 10;
     } else {
       height = MediaQuery.of(context).size.height - 130;
+      dividerGap = 30;
     }
     return Scaffold(
       appBar: MainAppBar(_scaffoldKey),
@@ -52,8 +56,8 @@ class _CostChargesPageState extends State<CostChargesPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 30),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20, vertical: dividerGap),
                       child: Image.asset(
                         'assets/images/logo_divide.png',
                         width: 320,
@@ -63,7 +67,7 @@ class _CostChargesPageState extends State<CostChargesPage> {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.zero,
+                  padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
                   child: Column(children: [
                     Text(
                       'As of (Todays date)',
