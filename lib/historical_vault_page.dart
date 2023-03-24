@@ -16,16 +16,31 @@ class _HistoricalVaultPageState extends State<HistoricalVaultPage> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   User user = User.instance;
 
+  late TooltipBehavior _tooltipBehavior;
+  late ZoomPanBehavior _zoomPanBehavior;
+
   MetalHistoricPerformance? dropdownValue;
   String? dropdownTime;
   int? firstIndex;
 
   Widget build(BuildContext context) {
+    _tooltipBehavior = TooltipBehavior(enable: true);
+    _zoomPanBehavior = ZoomPanBehavior(
+      enablePinching: true,
+      maximumZoomLevel: 0.1,
+      zoomMode: ZoomMode.x,
+      enablePanning: true,
+    );
     dropdownTime ??= 'Since Inception';
     dropdownValue ??= user.allHist;
     firstIndex ??= 0;
     MetalHistoricPerformance spotPrices = user.getSpotPrices;
     var height = 0.0;
+
+    final List<Color> colors = [
+      Color.fromRGBO(119, 119, 246, 0.6)
+    ];
+    final List<double> stops = [0.0];
 
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
       height = MediaQuery.of(context).size.width + 130;
@@ -104,8 +119,10 @@ class _HistoricalVaultPageState extends State<HistoricalVaultPage> {
                                       (MetalHistoricPerformance? newValue) {
                                     setState(() {
                                       dropdownValue = newValue!;
-                                      if (dropdownTime == 'Last 12 Months'){
-                                        firstIndex = dropdownValue!.getChartData.length - 365;
+                                      if (dropdownTime == 'Last 12 Months') {
+                                        firstIndex =
+                                            dropdownValue!.getChartData.length -
+                                                365;
                                       }
                                     });
                                   },
@@ -127,17 +144,22 @@ class _HistoricalVaultPageState extends State<HistoricalVaultPage> {
                                   items: <String>[
                                     'Since Inception',
                                     'Last 12 Months'
-                                  ].map<DropdownMenuItem<String>>((String value) {
-                                    return DropdownMenuItem<String>(child: Text(value), value: value,);
+                                  ].map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                    return DropdownMenuItem<String>(
+                                      child: Text(value),
+                                      value: value,
+                                    );
                                   }).toList(),
                                   onChanged: (String? newValue) {
                                     setState(() {
                                       dropdownTime = newValue!;
-                                      if(dropdownTime == 'Since Inception'){
+                                      if (dropdownTime == 'Since Inception') {
                                         firstIndex = 0;
-                                      }
-                                      else{
-                                        firstIndex = dropdownValue!.getChartData.length - 365;
+                                      } else {
+                                        firstIndex =
+                                            dropdownValue!.getChartData.length -
+                                                365;
                                       }
                                       print(dropdownValue);
                                     });
@@ -147,6 +169,8 @@ class _HistoricalVaultPageState extends State<HistoricalVaultPage> {
                       ]),
                 ),
                 SfCartesianChart(
+                  zoomPanBehavior: _zoomPanBehavior,
+                  tooltipBehavior: _tooltipBehavior,
                   primaryXAxis: CategoryAxis(),
                   axes: [CategoryAxis(name: 'yAxis', opposedPosition: true)],
                   legend: Legend(
@@ -154,10 +178,13 @@ class _HistoricalVaultPageState extends State<HistoricalVaultPage> {
                       position: LegendPosition.bottom,
                       overflowMode: LegendItemOverflowMode.wrap),
                   series: <ChartSeries>[
-                    LineSeries<ChartData, String>(
+                    AreaSeries<ChartData, String>(
+                        gradient: LinearGradient(colors: colors, stops: stops),
+                        opacity: 1,
                         name:
                             '${dropdownValue!.getName.toCapitalized()} Vault Stock Valuation',
-                        dataSource: dropdownValue!.getChartData.sublist(firstIndex!),
+                        dataSource:
+                            dropdownValue!.getChartData.sublist(firstIndex!),
                         xValueMapper: (ChartData data, _) => data.label,
                         yValueMapper: (ChartData data, _) => (data.data *
                             user.currencyRates[user.getChosenCurrency]!)),
