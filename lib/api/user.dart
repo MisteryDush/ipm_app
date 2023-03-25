@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:forex_conversion/forex_conversion.dart';
 import 'package:intl/intl.dart';
 import 'package:ipm_app/api/commodity.dart';
 import 'package:ipm_app/api/injection.dart';
@@ -14,6 +13,7 @@ import 'metal_historic_performance.dart';
 class User {
   String _token = '';
   String _name = '';
+  String _vaultId = '';
   double _totalWeight = 0.0;
   double _totalValue = 0.0;
   double _lastTotalValue = 0.0;
@@ -41,7 +41,6 @@ class User {
   };
   String _chosenCurrency = 'USD';
   String _chosenWeight = 'Toz';
-  final fx = Forex();
 
   String get getChosenCurrency {
     return _chosenCurrency;
@@ -59,6 +58,8 @@ class User {
     return _chosenWeight;
   }
 
+  get getVaultId => _vaultId;
+
   get allHist {
     return _metals[1];
   }
@@ -70,7 +71,10 @@ class User {
   List<DropdownMenuItem<MetalHistoricPerformance>> get getDropdownAllMetals {
     List<DropdownMenuItem<MetalHistoricPerformance>> menuItems = [];
     for (MetalHistoricPerformance metal in _metals.sublist(1)) {
-      menuItems.add(DropdownMenuItem(child: Text(metal.toString()), value: metal,));
+      menuItems.add(DropdownMenuItem(
+        child: Text(metal.toString()),
+        value: metal,
+      ));
     }
 
     return menuItems;
@@ -247,7 +251,13 @@ class User {
         .forEach((k, v) =>
             (_metals.add(MetalHistoricPerformance(k, v['data'], v['labels']))));
 
-    print(_metals);
+    r = await Requests.get(
+        'http://portal.demo.ipm.capital/mobileApi/data/getUserInfo',
+        headers: {'Authorization': 'Bearer $getToken'},
+        bodyEncoding: RequestBodyEncoding.FormURLEncoded);
+
+    _vaultId = r.json()['vaultId'];
+
   }
 
   List<DataRow> getCommoditiesRows() {
@@ -408,11 +418,14 @@ class User {
   }
 
   Future<void> getRates() async {
-    currencyRates['EUR'] = await fx.getCurrencyConverted('USD', 'EUR', 1);
-    currencyRates['GBP'] = await fx.getCurrencyConverted('USD', 'GBP', 1);
-    currencyRates['MYR'] = await fx.getCurrencyConverted('USD', 'MYR', 1);
-    currencyRates['SGD'] = await fx.getCurrencyConverted('USD', 'SGD', 1);
-    currencyRates['AUD'] = await fx.getCurrencyConverted('USD', 'AUD', 1);
+    var r = await Requests.get(
+        'http://portal.demo.ipm.capital/mobileApi/data/currencyRates',
+        headers: {'Authorization': 'Bearer $getToken'},
+        bodyEncoding: RequestBodyEncoding.FormURLEncoded);
+    for (dynamic currency in r.json()['rates']){
+      currencyRates[currency['currency']] = double.parse(currency['rate']);
+    }
+    print(currencyRates);
   }
 }
 
