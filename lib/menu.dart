@@ -9,24 +9,19 @@ const Color textColorGold = Color.fromRGBO(209, 142, 48, 1);
 const Color backgroundColorIndigo = Color.fromRGBO(49, 0, 94, 1);
 
 class Menu extends StatelessWidget {
-  User user = User.instance;
-  var totalFormat = NumberFormat("###,##0.0#", "en_US");
-  var percentageFormat = NumberFormat("##0.0#", "en_US");
-  var differenceFormat = NumberFormat("###,##0.0#", "en_US");
-
-  double dividerGap = 0.0;
+  final User user = User.instance;
+  final totalFormat = NumberFormat("###,##0.0#", "en_US");
+  final percentageFormat = NumberFormat("##0.0#", "en_US");
+  final differenceFormat = NumberFormat("###,##0.0#", "en_US");
 
   @override
   Widget build(BuildContext context) {
+    double dividerGap = 0.0;
     GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
 
-    var height = 0.0;
-
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
-      height = MediaQuery.of(context).size.width + 130;
       dividerGap = 10;
     } else {
-      height = MediaQuery.of(context).size.height - 130;
       dividerGap = 30;
     }
 
@@ -42,7 +37,6 @@ class Menu extends StatelessWidget {
                     child: Padding(
                   padding: EdgeInsets.zero,
                   child: SizedBox(
-                    height: height,
                     child: Column(
                       children: [
                         Padding(

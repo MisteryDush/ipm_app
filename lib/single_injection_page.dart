@@ -5,21 +5,13 @@ import 'api/user.dart';
 import 'login.dart';
 
 class SingleInjectionPage extends StatelessWidget {
-  late Injection injection;
-  User user = User.instance;
+  late final Injection injection;
+  final User user = User.instance;
 
   SingleInjectionPage({Key? key, required this.injection}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var height = 0.0;
-
-    if (MediaQuery.of(context).orientation == Orientation.landscape) {
-      height = MediaQuery.of(context).size.width + 130;
-    } else {
-      height = MediaQuery.of(context).size.height - 130;
-    }
-
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 100,
@@ -34,7 +26,6 @@ class SingleInjectionPage extends StatelessWidget {
       body: SingleChildScrollView(child: Padding(
         padding: EdgeInsets.zero,
         child: SizedBox(
-          height: height,
           child: Column(
             children: [
               Padding(

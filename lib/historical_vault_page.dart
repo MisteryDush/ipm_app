@@ -36,7 +36,6 @@ class _HistoricalVaultPageState extends State<HistoricalVaultPage> {
     dropdownValue ??= user.allHist;
     firstIndex ??= 0;
     MetalHistoricPerformance spotPrices = user.getSpotPrices;
-    var height = 0.0;
 
     final List<Color> colors = [
       Color.fromRGBO(119, 119, 246, 0.6)
@@ -45,10 +44,8 @@ class _HistoricalVaultPageState extends State<HistoricalVaultPage> {
 
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
       dividerGap = 10;
-      height = MediaQuery.of(context).size.width + 130;
     } else {
       dividerGap = 30;
-      height = MediaQuery.of(context).size.height - 130;
     }
 
     return Scaffold(
@@ -61,7 +58,6 @@ class _HistoricalVaultPageState extends State<HistoricalVaultPage> {
                 child: Padding(
           padding: EdgeInsets.zero,
           child: SizedBox(
-            height: height,
             child: Column(
               children: [
                 Padding(

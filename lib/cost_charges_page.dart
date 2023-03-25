@@ -18,13 +18,9 @@ class _CostChargesPageState extends State<CostChargesPage> {
   double dividerGap = 0.0;
 
   Widget build(BuildContext context) {
-    var height = 0.0;
-
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
-      height = MediaQuery.of(context).size.width + 130;
       dividerGap = 10;
     } else {
-      height = MediaQuery.of(context).size.height - 130;
       dividerGap = 30;
     }
     return Scaffold(
@@ -37,7 +33,6 @@ class _CostChargesPageState extends State<CostChargesPage> {
                 child: Padding(
           padding: EdgeInsets.zero,
           child: SizedBox(
-            height: height,
             child: Column(
               children: [
                 Padding(
@@ -70,7 +65,7 @@ class _CostChargesPageState extends State<CostChargesPage> {
                   padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
                   child: Column(children: [
                     Text(
-                      'As of (Todays date)',
+                      'As of ${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
                       style: TextStyle(
                         fontSize: 18,
                       ),

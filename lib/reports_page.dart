@@ -16,6 +16,14 @@ class ReportsPage extends StatefulWidget {
 
 class _ReportsPageState extends State<ReportsPage> {
   double dividerGap = 0.0;
+  double height = 0.0;
+
+  ButtonStyle buttonStyle = ElevatedButton.styleFrom(
+      foregroundColor: textColorGold,
+      backgroundColor: backgroundColorIndigo,
+      elevation: 0,
+      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+      side: const BorderSide(color: textColorGold));
 
   User user = User.instance;
 
@@ -24,8 +32,10 @@ class _ReportsPageState extends State<ReportsPage> {
   Widget build(BuildContext context) {
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
       dividerGap = 10;
+      height = MediaQuery.of(context).size.height - 130;
     } else {
-      dividerGap = 30;
+      dividerGap = 20;
+      height = MediaQuery.of(context).size.height - 130;
     }
 
     return Scaffold(
@@ -33,14 +43,15 @@ class _ReportsPageState extends State<ReportsPage> {
       body: Scaffold(
         key: _scaffoldKey,
         drawer: MainDrawer(),
-        body: Padding(
+        body: SizedBox(
+            child: SingleChildScrollView(
+                child: Padding(
           padding: EdgeInsets.zero,
           child: SizedBox(
-            height: 1000,
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 25),
+                  padding: EdgeInsets.symmetric(vertical: 15),
                   child: Text(
                     'Reports',
                     textAlign: TextAlign.center,
@@ -91,7 +102,9 @@ class _ReportsPageState extends State<ReportsPage> {
                     )
                   ],
                 ),
-                ElevatedButton(
+                SizedBox(width: 200,
+                    child: ElevatedButton(
+                    style: buttonStyle,
                     onPressed: () async {
                       var r = await Requests.get(
                           'http://portal.demo.ipm.capital/mobileApi/data/pdf/inventory/${user.getVaultId}',
@@ -107,7 +120,7 @@ class _ReportsPageState extends State<ReportsPage> {
                         await file.writeAsBytes(bytes);
                       } on PathNotFoundException {}
                     },
-                    child: const Text('Download report')),
+                    child: const Text('Download report'))),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 25),
                   child: Text(
@@ -134,12 +147,13 @@ class _ReportsPageState extends State<ReportsPage> {
                     )
                   ],
                 ),
-                Row(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                        width: 100,
+                        width: 200,
                         child: ElevatedButton(
+                            style: buttonStyle,
                             onPressed: () async {
                               var r = await Requests.get(
                                   'http://portal.demo.ipm.capital/mobileApi/data/pdf/storageCosts/three/${user.getVaultId}',
@@ -160,8 +174,9 @@ class _ReportsPageState extends State<ReportsPage> {
                             },
                             child: const Text('3 Months'))),
                     SizedBox(
-                        width: 100,
+                        width: 200,
                         child: ElevatedButton(
+                            style: buttonStyle,
                             onPressed: () async {
                               var r = await Requests.get(
                                   'http://portal.demo.ipm.capital/mobileApi/data/pdf/storageCosts/six/${user.getToken}',
@@ -183,8 +198,9 @@ class _ReportsPageState extends State<ReportsPage> {
                             },
                             child: const Text('6 Months'))),
                     SizedBox(
-                        width: 100,
+                        width: 200,
                         child: ElevatedButton(
+                            style: buttonStyle,
                             onPressed: () async {
                               var r = await Requests.get(
                                   'http://portal.demo.ipm.capital/mobileApi/data/pdf/storageCosts/twelve/${user.getVaultId}',
@@ -209,7 +225,7 @@ class _ReportsPageState extends State<ReportsPage> {
               ],
             ),
           ),
-        ),
+        ))),
       ),
     );
   }
