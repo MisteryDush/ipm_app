@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -238,6 +239,34 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           );
                         });
+                      }
+                      on SocketException{
+                        Navigator.of(context).pop();
+                        showDialog(
+                            barrierDismissible: true,
+                            context: context,
+                            builder: (_)
+                            {
+                              return Dialog(
+                                // The background color
+                                backgroundColor: backgroundColorIndigo,
+                                child: Padding(
+                                  padding:
+                                  const EdgeInsets.symmetric(vertical: 20),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: const [
+                                      // Some text
+                                      Text(
+                                        'No Internet Connection.',
+                                        style: TextStyle(
+                                            color: textColorGold, fontSize: 14),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
                       }
                       finally {
                         if (isSuccess) {
