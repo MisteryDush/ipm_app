@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:ipm_app/widgets/main_app_bar.dart';
 import 'package:ipm_app/widgets/main_drawer.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:requests/requests.dart';
 
 import 'api/user.dart';
@@ -102,25 +103,35 @@ class _ReportsPageState extends State<ReportsPage> {
                     )
                   ],
                 ),
-                SizedBox(width: 200,
+                SizedBox(
+                    width: 200,
                     child: ElevatedButton(
-                    style: buttonStyle,
-                    onPressed: () async {
-                      var r = await Requests.get(
-                          'http://portal.demo.ipm.capital/mobileApi/data/pdf/inventory/${user.getVaultId}',
-                          headers: {'Authorization': 'Bearer ${user.getToken}'},
-                          bodyEncoding: RequestBodyEncoding.FormURLEncoded);
-                      final bytes = r.bodyBytes;
-                      final directory =
-                          await FilePicker.platform.getDirectoryPath();
-                      final filePath =
-                          '${directory}/vault_inventory_report.pdf';
-                      final file = File(filePath);
-                      try {
-                        await file.writeAsBytes(bytes);
-                      } on PathNotFoundException {}
-                    },
-                    child: const Text('Download report'))),
+                        style: buttonStyle,
+                        onPressed: () async {
+                          var status = await Permission.storage.status;
+                          print(status.isGranted);
+                          if (!status.isGranted) {
+                            await Permission.storage.request();
+                          } else {
+                            var r = await Requests.get(
+                                'http://portal.demo.ipm.capital/mobileApi/data/pdf/inventory/${user.getVaultId}',
+                                headers: {
+                                  'Authorization': 'Bearer ${user.getToken}'
+                                },
+                                bodyEncoding:
+                                    RequestBodyEncoding.FormURLEncoded);
+                            final bytes = r.bodyBytes;
+                            final directory =
+                                await FilePicker.platform.getDirectoryPath();
+                            final filePath =
+                                '${directory}/vault_inventory_report.pdf';
+                            final file = File(filePath);
+                            try {
+                              await file.writeAsBytes(bytes);
+                            } on PathNotFoundException {}
+                          }
+                        },
+                        child: const Text('Download report'))),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 25),
                   child: Text(
@@ -155,22 +166,28 @@ class _ReportsPageState extends State<ReportsPage> {
                         child: ElevatedButton(
                             style: buttonStyle,
                             onPressed: () async {
-                              var r = await Requests.get(
-                                  'http://portal.demo.ipm.capital/mobileApi/data/pdf/storageCosts/three/${user.getVaultId}',
-                                  headers: {
-                                    'Authorization': 'Bearer ${user.getToken}'
-                                  },
-                                  bodyEncoding:
-                                      RequestBodyEncoding.FormURLEncoded);
-                              final bytes = r.bodyBytes;
-                              final directory =
-                                  await FilePicker.platform.getDirectoryPath();
-                              final filePath =
-                                  '${directory}/3_months_storage_report.pdf';
-                              final file = File(filePath);
-                              try {
-                                await file.writeAsBytes(bytes);
-                              } on PathNotFoundException {}
+                              var status = await Permission.storage.status;
+                              print(status.isGranted);
+                              if (!status.isGranted) {
+                                await Permission.storage.request();
+                              } else {
+                                var r = await Requests.get(
+                                    'http://portal.demo.ipm.capital/mobileApi/data/pdf/storageCosts/three/${user.getVaultId}',
+                                    headers: {
+                                      'Authorization': 'Bearer ${user.getToken}'
+                                    },
+                                    bodyEncoding:
+                                        RequestBodyEncoding.FormURLEncoded);
+                                final bytes = r.bodyBytes;
+                                final directory = await FilePicker.platform
+                                    .getDirectoryPath();
+                                final filePath =
+                                    '${directory}/3_months_storage_report.pdf';
+                                final file = File(filePath);
+                                try {
+                                  await file.writeAsBytes(bytes);
+                                } on PathNotFoundException {}
+                              }
                             },
                             child: const Text('3 Months'))),
                     SizedBox(
@@ -178,23 +195,29 @@ class _ReportsPageState extends State<ReportsPage> {
                         child: ElevatedButton(
                             style: buttonStyle,
                             onPressed: () async {
-                              var r = await Requests.get(
-                                  'http://portal.demo.ipm.capital/mobileApi/data/pdf/storageCosts/six/${user.getToken}',
-                                  headers: {
-                                    'Authorization': 'Bearer ${user.getToken}'
-                                  },
-                                  bodyEncoding:
-                                      RequestBodyEncoding.FormURLEncoded);
-                              final bytes = r.bodyBytes;
-                              final directory =
-                                  await FilePicker.platform.getDirectoryPath();
-                              final filePath =
-                                  '${directory}/6_months_storage_report.pdf';
-                              final file = File(filePath);
+                              var status = await Permission.storage.status;
+                              print(status.isGranted);
+                              if (!status.isGranted) {
+                                await Permission.storage.request();
+                              } else {
+                                var r = await Requests.get(
+                                    'http://portal.demo.ipm.capital/mobileApi/data/pdf/storageCosts/six/${user.getToken}',
+                                    headers: {
+                                      'Authorization': 'Bearer ${user.getToken}'
+                                    },
+                                    bodyEncoding:
+                                        RequestBodyEncoding.FormURLEncoded);
+                                final bytes = r.bodyBytes;
+                                final directory = await FilePicker.platform
+                                    .getDirectoryPath();
+                                final filePath =
+                                    '${directory}/6_months_storage_report.pdf';
+                                final file = File(filePath);
 
-                              try {
-                                await file.writeAsBytes(bytes);
-                              } on PathNotFoundException {}
+                                try {
+                                  await file.writeAsBytes(bytes);
+                                } on PathNotFoundException {}
+                              }
                             },
                             child: const Text('6 Months'))),
                     SizedBox(
@@ -202,22 +225,28 @@ class _ReportsPageState extends State<ReportsPage> {
                         child: ElevatedButton(
                             style: buttonStyle,
                             onPressed: () async {
-                              var r = await Requests.get(
-                                  'http://portal.demo.ipm.capital/mobileApi/data/pdf/storageCosts/twelve/${user.getVaultId}',
-                                  headers: {
-                                    'Authorization': 'Bearer ${user.getToken}'
-                                  },
-                                  bodyEncoding:
-                                      RequestBodyEncoding.FormURLEncoded);
-                              final bytes = r.bodyBytes;
-                              final directory =
-                                  await FilePicker.platform.getDirectoryPath();
-                              final filePath =
-                                  '${directory}/12_months_storage_report.pdf';
-                              final file = File(filePath);
-                              try {
-                                await file.writeAsBytes(bytes);
-                              } on PathNotFoundException {}
+                              var status = await Permission.storage.status;
+                              print(status.isGranted);
+                              if (!status.isGranted) {
+                                await Permission.storage.request();
+                              } else {
+                                var r = await Requests.get(
+                                    'http://portal.demo.ipm.capital/mobileApi/data/pdf/storageCosts/twelve/${user.getVaultId}',
+                                    headers: {
+                                      'Authorization': 'Bearer ${user.getToken}'
+                                    },
+                                    bodyEncoding:
+                                        RequestBodyEncoding.FormURLEncoded);
+                                final bytes = r.bodyBytes;
+                                final directory = await FilePicker.platform
+                                    .getDirectoryPath();
+                                final filePath =
+                                    '${directory}/12_months_storage_report.pdf';
+                                final file = File(filePath);
+                                try {
+                                  await file.writeAsBytes(bytes);
+                                } on PathNotFoundException {}
+                              }
                             },
                             child: const Text('12 Months'))),
                   ],
