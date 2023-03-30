@@ -20,11 +20,11 @@ class _ReportsPageState extends State<ReportsPage> {
   double height = 0.0;
 
   ButtonStyle buttonStyle = ElevatedButton.styleFrom(
-      foregroundColor: textColorGold,
+      foregroundColor: Colors.white,
       backgroundColor: backgroundColorIndigo,
       elevation: 0,
       padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-      side: const BorderSide(color: textColorGold));
+      side: const BorderSide(color: Colors.black));
 
   User user = User.instance;
 
@@ -51,32 +51,6 @@ class _ReportsPageState extends State<ReportsPage> {
           child: SizedBox(
             child: Column(
               children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  child: Text(
-                    'Reports',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: textColorGold,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 20, vertical: dividerGap),
-                      child: Image.asset(
-                        'assets/images/logo_divide.png',
-                        width: 320,
-                        fit: BoxFit.fill,
-                      ),
-                    )
-                  ],
-                ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 25),
                   child: Text(

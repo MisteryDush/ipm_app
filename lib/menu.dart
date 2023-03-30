@@ -112,7 +112,7 @@ class Menu extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(vertical: 20)),
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(horizontal: 16),
+                                    const EdgeInsets.symmetric(horizontal: 24),
                                 child: FittedBox(
                                   child: SizedBox(
                                     height: 450,

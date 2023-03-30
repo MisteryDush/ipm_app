@@ -80,7 +80,7 @@ class _CostChargesPageState extends State<CostChargesPage> {
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 20),
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
                   child: FittedBox(
                     child: SizedBox(
                       height: 700,

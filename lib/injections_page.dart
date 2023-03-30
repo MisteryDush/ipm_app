@@ -101,7 +101,7 @@ class _InjectionsPageState extends State<InjectionsPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: FittedBox(
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,

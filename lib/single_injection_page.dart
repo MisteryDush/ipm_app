@@ -55,7 +55,7 @@ class SingleInjectionPage extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 25),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 25),
                 child: FittedBox(
                   child: SizedBox(
                     height: 1200,
