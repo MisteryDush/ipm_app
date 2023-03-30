@@ -17,6 +17,21 @@ class _CostChargesPageState extends State<CostChargesPage> {
 
   double dividerGap = 0.0;
 
+  List<String> months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+  ];
+
   Widget build(BuildContext context) {
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
       dividerGap = 10;
@@ -65,15 +80,9 @@ class _CostChargesPageState extends State<CostChargesPage> {
                   padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
                   child: Column(children: [
                     Text(
-                      'As of ${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
+                      'As of ${DateTime.now().day} ${months[DateTime.now().month - 1]} ${DateTime.now().year}',
                       style: TextStyle(
                         fontSize: 18,
-                      ),
-                    ),
-                    Text(
-                      'Time stamp of last data capture: GMT (time)',
-                      style: TextStyle(
-                        fontSize: 16,
                       ),
                     ),
                   ]),
