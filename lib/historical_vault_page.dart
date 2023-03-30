@@ -131,7 +131,7 @@ class _HistoricalVaultPageState extends State<HistoricalVaultPage> {
                           width: 10,
                         ),
                         Container(
-                            width: 150,
+                            width: 160,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(color: Colors.black),
