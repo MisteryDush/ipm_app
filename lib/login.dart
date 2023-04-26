@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ipm_app/settings.dart';
@@ -10,8 +12,11 @@ import 'reports_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight])
-      .then((value) => runApp(MyApp()));
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight
+  ]).then((value) => runApp(MyApp()));
   runApp(const MyApp());
 }
 
@@ -197,6 +202,33 @@ class _LoginPageState extends State<LoginPage> {
                                       // Some text
                                       Text(
                                         'Invalid credentials, try again.',
+                                        style: TextStyle(
+                                            color: textColorGold, fontSize: 14),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                        isSuccess = false;
+                      } on TimeoutException {
+                        Navigator.of(context).pop();
+                        showDialog(
+                            barrierDismissible: true,
+                            context: context,
+                            builder: (_) {
+                              return Dialog(
+                                // The background color
+                                backgroundColor: backgroundColorIndigo,
+                                child: Padding(
+                                  padding:
+                                  const EdgeInsets.symmetric(vertical: 20),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: const [
+                                      // Some text
+                                      Text(
+                                        'Internet problems, please try again. Noob',
                                         style: TextStyle(
                                             color: textColorGold, fontSize: 14),
                                       )
